@@ -124,42 +124,45 @@
       border-bottom-color: #D4AF37;
     }
 
-    /* AVATAR NGHỆ THUẬT PHONG THỦY CAO CẤP */
+    /* AVATAR HOÀNG KIM SƠN SON (GOLD METALLIC 3D DEPTH) */
     .card-avatar {
-      width: 58px;
-      height: 58px;
-      border-radius: 18px;
+      width: 62px;
+      height: 62px;
+      border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 10px;
-      background: radial-gradient(circle at 30% 30%, #FFFDF5, #F4EEDB);
-      color: #961D18;
-      border: 1.5px solid rgba(198, 146, 20, 0.35);
-      box-shadow: 0 4px 12px rgba(150, 29, 24, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8);
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #FFFDF8 0%, #F5ECCF 50%, #E6D39D 100%);
+      border: 1.5px solid #D4AF37;
+      box-shadow: 0 4px 14px rgba(180, 130, 20, 0.18), inset 0 1px 2px #FFFFFF;
       position: relative;
     }
     .card-avatar::after {
       content: '';
       position: absolute;
-      inset: 2px;
-      border-radius: 14px;
-      border: 1px solid rgba(198, 146, 20, 0.15);
+      inset: 3px;
+      border-radius: 15px;
+      border: 1px dashed rgba(168, 36, 30, 0.25);
       pointer-events: none;
     }
     .card-avatar svg {
-      width: 32px;
-      height: 32px;
-      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+      width: 36px;
+      height: 36px;
+      color: #961D18;
+      filter: drop-shadow(0 2px 3px rgba(150, 29, 24, 0.2));
     }
     body.dark-mode .card-avatar {
-      background: radial-gradient(circle at 30% 30%, #2A241F, #1A1614);
-      color: #F5C542;
-      border-color: rgba(212, 175, 55, 0.4);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      background: linear-gradient(135deg, #2D2418 0%, #1F1912 60%, #15110E 100%);
+      border: 1.5px solid #E5C158;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(245, 197, 66, 0.3);
     }
     body.dark-mode .card-avatar::after {
-      border-color: rgba(212, 175, 55, 0.2);
+      border: 1px dashed rgba(229, 193, 88, 0.35);
+    }
+    body.dark-mode .card-avatar svg {
+      color: #F8D368;
+      filter: drop-shadow(0 0 6px rgba(248, 211, 104, 0.45));
     }
 
     /* STICKY HEADER & TOP ROW */
