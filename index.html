@@ -17,25 +17,25 @@
   </script>
 
   <style>
-    /* MATERIAL 3 THEME: ĐỎ HOÀNG GIA - VÀNG ĐỒNG KIM - TRẮNG NGÀ */
+    /* MATERIAL 3 THEME: TÔNG SÁNG TINH KHÔI - ĐỎ SON RẠNG RỠ - VÀNG KIM THANH TỊNH */
     :root {
-      --primary: #8E1B15;                /* Đỏ đại tự / Đỏ cờ truyền thống sang trọng */
-      --on-primary: #FFFFFF;             /* Trắng tinh */
-      --primary-container: #FFF0EE;      /* Trắng hồng nhạt ửng đỏ nhẹ */
-      --on-primary-container: #4D0A06;   /* Đỏ bã trầu đậm quý phái */
+      --primary: #9C1C16;                /* Đỏ son tươi sáng, rực rỡ khí tiết */
+      --on-primary: #FFFFFF;             /* Trắng tinh khiết */
+      --primary-container: #FFF4F2;      /* Trắng hồng thanh thoát cực sáng */
+      --on-primary-container: #540D08;   /* Đỏ son đậm trang trọng */
       
-      --secondary-container: #FEF8E7;    /* Vàng ánh kim nhạt trang nhã */
-      --on-secondary-container: #5C4300; /* Nâu vàng đồng cổ điển */
+      --secondary-container: #FFFDF5;    /* Vàng kem ánh kim siêu sáng, nhẹ nhõm */
+      --on-secondary-container: #523E00; /* Nâu vàng kim trang nhã */
       --accent-gold: #C69214;            /* Vàng kim sắc sảo */
       
-      --background: #FCFAF6;             /* Trắng ngà cổ truyền siêu sáng & sạch */
-      --surface: #FCFAF6;
-      --surface-variant: #F4EFE6;        /* Trắng kem be nhạt */
-      --on-surface-variant: #5C564E;     /* Xám trầm ấm */
-      --on-background: #1C1917;          /* Đen than dễ chịu */
-      --on-surface: #1C1917;
-      --card-white: #FFFFFF;             /* Trắng tinh khôi */
-      --border-subtle: #EFE9DE;          /* Viền be siêu mỏng */
+      --background: #FFFFFF;             /* Trắng tinh khôi tuyệt đối, sáng bừng không gian */
+      --surface: #FFFFFF;
+      --surface-variant: #F8F6F2;        /* Trắng ngà siêu nhạt */
+      --on-surface-variant: #6E685E;     /* Xám ấm trang nhã */
+      --on-background: #181512;          /* Đen than mềm mại sắc nét */
+      --on-surface: #181512;
+      --card-white: #FFFFFF;             /* Trắng tinh 100% */
+      --border-subtle: #EBE5DC;          /* Viền be mạ vàng siêu thanh */
       
       --card-radius: 24px;
       --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -147,13 +147,13 @@
       border: 1px solid var(--border-subtle);
       cursor: pointer;
       transition: all 0.15s ease;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     }
     .filter-chip.selected {
       background: var(--primary);
       color: var(--on-primary);
       border-color: var(--primary);
-      box-shadow: 0 2px 8px rgba(142, 27, 21, 0.25);
+      box-shadow: 0 4px 12px rgba(156, 28, 22, 0.25);
     }
 
     /* LAZY VERTICAL GRID (GridCells.Fixed(2), spacedBy 12dp) */
@@ -174,7 +174,7 @@
       cursor: pointer;
       transition: transform 0.12s, box-shadow 0.12s;
       border: 1px solid var(--border-subtle);
-      box-shadow: 0 3px 10px rgba(142, 27, 21, 0.03);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
     }
     .compose-card:active {
       transform: scale(0.96);
@@ -548,7 +548,7 @@
       color: var(--on-background);
       font-family: inherit;
       outline: none;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     }
     .m3-textfield:focus {
       border-color: var(--primary);
