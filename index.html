@@ -1319,6 +1319,58 @@
     color: var(--on-surface-variant);
   }
 
+
+/* ========================================================
+   STRICT VERTICAL SCROLL ONLY (Zero Horizontal Scroll)
+   ======================================================== */
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+  width: 100% !important;
+}
+
+/* Category Filter Chips: Wrap naturally onto 2-3 compact rows instead of horizontal swipe */
+.chips-scroll-row, .filter-chips-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px 8px !important;
+  padding: 0 14px 14px 14px !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+}
+
+.filter-chip {
+  padding: 6px 12px !important;
+  font-size: 12.5px !important;
+  min-height: 34px !important;
+  border-radius: 999px !important;
+  white-space: nowrap !important;
+  flex: 0 0 auto !important;
+}
+
+/* Slide Offerings in Detail View: 2-column vertical grid instead of horizontal swipe */
+.slides-scroll-row {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 10px !important;
+  padding: 8px 0 14px 0 !important;
+  overflow-x: visible !important;
+}
+
+.slide-thumb-card {
+  width: 100% !important;
+  flex: none !important;
+  scroll-snap-align: none !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+.slide-thumb-img {
+  width: 100% !important;
+  height: 100px !important;
+  object-fit: cover !important;
+}
+
 </style>
 </head>
 <body>
