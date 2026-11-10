@@ -1010,6 +1010,289 @@
   color: var(--primary);
   margin-top: 2px;
 }
+
+/* ========================================================
+   MOBILE FIRST & RETINA OPTIMIZATION (iPhone & Android)
+   ======================================================== */
+@media (max-width: 640px) {
+  :root {
+    --card-radius: 18px;
+  }
+  
+  body {
+    padding-bottom: calc(76px + env(safe-area-inset-bottom, 16px));
+  }
+
+  .screen-header {
+    padding: 14px 16px 8px 16px;
+  }
+  .screen-title {
+    font-size: 22px;
+  }
+  .screen-subtitle {
+    font-size: 12.5px;
+  }
+  
+  .theme-toggle-btn {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 16px;
+  }
+
+  #hdrAlmanacBar {
+    padding: 10px 12px !important;
+    margin-top: 10px !important;
+    border-radius: 14px !important;
+  }
+  #hdrAlmanacText {
+    font-size: 12.5px !important;
+    line-height: 1.35;
+  }
+  #hdrAlmanacSub {
+    font-size: 11px !important;
+    line-height: 1.3;
+  }
+
+  .search-input-wrap {
+    margin: 12px 16px 8px 16px;
+    height: 46px;
+    border-radius: 14px;
+    padding: 0 12px;
+  }
+  .search-input {
+    font-size: 16px !important;
+  }
+  .filter-chips-row {
+    padding: 6px 16px 12px 16px;
+    gap: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .filter-chips-row::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-chip {
+    padding: 7px 14px;
+    font-size: 13px;
+    min-height: 38px;
+    border-radius: 999px;
+  }
+
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 0 14px 28px 14px;
+  }
+  .compose-card {
+    height: auto !important;
+    min-height: 138px !important;
+    padding: 12px 10px !important;
+    border-radius: 16px !important;
+    gap: 6px;
+    justify-content: space-between;
+  }
+  .compose-card:active {
+    transform: scale(0.97);
+  }
+  .card-avatar {
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 12px !important;
+  }
+  .card-avatar svg {
+    width: 22px !important;
+    height: 22px !important;
+  }
+  .card-title-text {
+    font-size: 13.5px !important;
+    line-height: 1.35 !important;
+    font-weight: 700;
+    max-height: 2.7em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .card-badge-cat {
+    font-size: 10.5px !important;
+    margin-top: 2px;
+  }
+
+  .m3-textfield {
+    font-size: 16px !important;
+    min-height: 46px;
+    padding: 10px 14px;
+    border-radius: 12px;
+  }
+  .m3-primary-btn {
+    min-height: 48px;
+    font-size: 15px;
+    border-radius: 14px;
+  }
+
+  .top-app-bar {
+    padding: 8px 12px;
+    min-height: 52px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .btn-icon-back {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+  }
+  .btn-icon-back:active {
+    background: var(--surface-variant);
+  }
+  .detail-content {
+    padding: 14px 14px 48px 14px;
+  }
+  .detail-emoji-box {
+    width: 50px;
+    height: 50px;
+    font-size: 26px;
+  }
+  .detail-title {
+    font-size: 20px;
+    line-height: 1.35;
+  }
+  .detail-intro {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .section-card {
+    padding: 14px 12px;
+    border-radius: 18px;
+    margin-bottom: 12px;
+  }
+  .offering-item {
+    min-height: 42px;
+    padding: 8px 10px;
+    font-size: 13.5px;
+  }
+
+  .prayer-card {
+    padding: 16px 12px;
+    border-radius: 18px;
+  }
+  .prayer-card-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  .prayer-card-body {
+    font-size: 16px;
+    line-height: 1.75;
+    letter-spacing: 0.01em;
+  }
+  .prayer-actions-row {
+    margin-top: 14px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .prayer-actions-row button {
+    min-height: 42px;
+    font-size: 13.5px;
+    border-radius: 10px;
+  }
+  #btnCopyPrayer {
+    flex: 2;
+  }
+
+  .slides-scroll-row {
+    gap: 8px;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .slide-thumb-card {
+    width: 140px;
+    scroll-snap-align: start;
+    border-radius: 10px;
+  }
+  .slide-thumb-img {
+    height: 95px;
+    border-radius: 8px 8px 0 0;
+  }
+  .slide-thumb-title {
+    font-size: 11px;
+    padding: 6px 4px;
+  }
+
+  .app-modal-dialog {
+    width: 95% !important;
+    max-width: 420px !important;
+    max-height: 88vh !important;
+    border-radius: 22px !important;
+    padding: 0 !important;
+  }
+  .app-modal-header {
+    padding: 14px 16px;
+  }
+  .app-modal-body {
+    padding: 14px 16px;
+  }
+  .app-modal-footer {
+    padding: 12px 16px;
+  }
+  .cal-cell {
+    min-height: 40px;
+    padding: 6px 2px;
+  }
+  .cal-solar {
+    font-size: 13.5px;
+  }
+  .cal-lunar {
+    font-size: 9.5px;
+  }
+
+  .m3-navigation-bar {
+    height: 60px;
+    padding-bottom: env(safe-area-inset-bottom, 8px);
+  }
+  .nav-item-btn {
+    min-height: 48px;
+  }
+  .nav-label {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 360px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 0 10px 24px 10px;
+  }
+  .compose-card {
+    flex-direction: row !important;
+    align-items: center !important;
+    text-align: left !important;
+    min-height: 64px !important;
+    padding: 10px 12px !important;
+    gap: 12px !important;
+  }
+  .card-avatar {
+    width: 42px !important;
+    height: 42px !important;
+    flex-shrink: 0;
+  }
+  .card-title-text {
+    -webkit-line-clamp: 1 !important;
+    font-size: 13px !important;
+  }
+  .card-badge-cat {
+    display: none !important;
+  }
+}
+
 </style>
 </head>
 <body>
