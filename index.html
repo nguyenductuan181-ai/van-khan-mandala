@@ -1293,6 +1293,32 @@
   }
 }
 
+
+  /* Ensure grid has sufficient bottom spacing so bottom nav never overlaps cards */
+  .grid-container {
+    padding-bottom: calc(105px + env(safe-area-inset-bottom, 24px)) !important;
+  }
+  #tabHome {
+    padding-bottom: calc(90px + env(safe-area-inset-bottom, 20px));
+  }
+  .filter-chips-row {
+    padding-right: 28px !important;
+  }
+  .compose-card {
+    min-height: 130px !important;
+    padding: 14px 10px 12px 10px !important;
+  }
+  .card-title-text {
+    font-size: 14px !important;
+    line-height: 1.3 !important;
+    text-align: center;
+  }
+  .card-badge-cat {
+    font-size: 11px !important;
+    text-align: center;
+    color: var(--on-surface-variant);
+  }
+
 </style>
 </head>
 <body>
@@ -1498,7 +1524,11 @@
     let selectedCat = null;
     let activeRitual = null;
 
-    const META_RITUALS = {'dong_tho': {'short': 'Động Thổ', 'full': 'Cúng Động Thổ Công Trình'}, 'nhap_trach_to_tien': {'short': 'Nhập Trạch', 'full': 'Cúng Rước Tổ Tiên Về Nhà Mới'}, 'an_vi_than_tai': {'short': 'An Vị Thần Tài', 'full': 'Cúng An Vị Bàn Thờ Thần Tài'}, 'khai_truong_dn': {'short': 'Khai Trương', 'full': 'Cúng Khai Trương Cửa Hàng & Doanh Nghiệp'}, 'thi_thuc_dong_tho': {'short': 'Thí Thực Động Thổ', 'full': 'Thí Thực Công Trình Động Thổ'}, 'ban_nha_ban_dat': {'short': 'Cầu Bán Đất', 'full': 'Cầu Nguyện Bán Nhà Bán Đất Hanh Thông'}, 'oan_gia_trai_chu': {'short': 'Hóa Giải Nghiệp', 'full': 'Cúng Trả Nợ Oan Gia Trái Chủ'}, 'thoi_noi_day_thang': {'short': 'Thôi Nôi', 'full': 'Cúng Đầy Tháng & Thôi Nôi Cho Bé'}, 'xay_mo_doi_mo': {'short': 'Dời Mộ Xây Mộ', 'full': 'Cúng Dời Mộ - Tạ Mộ - Xây Mộ Phần Gia Tiên'}, 'mung1_ram': {'short': 'Mùng 1 & Rằm', 'full': 'Bài Cúng Mùng 1 & Rằm Hàng Tháng'}, 'gio_to_tien': {'short': 'Giỗ Tổ Tiên', 'full': 'Bài Cúng Giỗ Tổ Tiên & Thân Tộc'}, 'vulan_trongnha': {'short': 'Vu Lan Trong Nhà', 'full': 'Bài Cúng Báo Hiếu Vu Lan (Trong Nhà)'}, 'cohon_ngoaitroi': {'short': 'Thí Thực Cô Hồn', 'full': 'Bài Cúng Thí Thực Ngoài Trời (Tháng 7)'}, 'than_tai': {'short': 'Khấn Thần Tài', 'full': 'Khấn Thần Tài Mùng 10 & Hàng Ngày'}, 'giao_thua': {'short': 'Đêm Giao Thừa', 'full': 'Văn Khấn Đêm Giao Thừa (Trừ Tịch)'}, 'tao_quan': {'short': 'Cúng Ông Táo', 'full': 'Văn Khấn Cúng Ông Công Ông Táo'}};
+    const META_RITUALS = {'dong_tho': {'short': 'Động Thổ', 'full': 'Cúng Động Thổ Công Trình'}, 'nhap_trach_to_tien': {'short': 'Nhập Trạch', 'full': 'Cúng Rước Tổ Tiên Về Nhà Mới'}, 'an_vi_than_tai': {'short': 'An Vị Thần Tài', 'full': 'Cúng An Vị Bàn Thờ Thần Tài'}, 'khai_truong_dn': {'short': 'Khai Trương', 'full': 'Cúng Khai Trương Cửa Hàng & Doanh Nghiệp'}, 'thi_thuc_dong_tho': {'short': 'Thí Thực Động Thổ', 'full': 'Thí Thực Công Trình Động Thổ'}, 'ban_nha_ban_dat': {'short': 'Cầu Bán Đất', 'full': 'Cầu Nguyện Bán Nhà Bán Đất Hanh Thông'}, 'oan_gia_trai_chu': {'short': 'Hóa Giải Nghiệp', 'full': 'Cúng Trả Nợ Oan Gia Trái Chủ'}, 'thoi_noi_day_thang': {'short': 'Thôi Nôi', 'full': 'Cúng Đầy Tháng & Thôi Nôi Cho Bé'}, 'xay_mo_doi_mo': {'short': 'Dời Mộ Xây Mộ', 'full': 'Cúng Dời Mộ - Tạ Mộ - Xây Mộ Phần Gia Tiên'}, 'mung1_ram': {'short': 'Mùng 1 & Rằm', 'full': 'Bài Cúng Mùng 1 & Rằm Hàng Tháng'}, 'gio_to_tien': {'short': 'Giỗ Tổ Tiên', 'full': 'Bài Cúng Giỗ Tổ Tiên & Thân Tộc'}, 'vulan_trongnha': {'short': 'Vu Lan Trong Nhà', 'full': 'Bài Cúng Báo Hiếu Vu Lan (Trong Nhà)'}, 'cohon_ngoaitroi': {'short': 'Thí Thực Cô Hồn', 'full': 'Bài Cúng Thí Thực Ngoài Trời (Tháng 7)'}, 'than_tai': {'short': 'Khấn Thần Tài', 'full': 'Khấn Thần Tài Mùng 10 & Hàng Ngày'}, 'giao_thua': {'short': 'Đêm Giao Thừa', 'full': 'Văn Khấn Đêm Giao Thừa (Trừ Tịch)'}, 'tao_quan': {'short': 'Cúng Ông Táo', 'full': 'Văn Khấn Cúng Ông Công Ông Táo'},
+      'thang_diem_phuc_toi': {'short': 'Điểm Phúc Tội', 'full': 'Bảng Thang Điểm Phúc Tội Doanh Nhân'},
+      'tat_nien': {'short': 'Lễ Tất Niên', 'full': 'Văn Khấn Lễ Tất Niên Chiều 30 Tết'},
+      'cung_xe': {'short': 'Cúng Xe Mới', 'full': 'Văn Khấn Cúng Xe Mới & Đi Lại Bình An'},
+      'thuong_nguyen': {'short': 'Rằm Tháng Giêng', 'full': 'Văn Khấn Cầu An Tết Nguyên Tiêu'}};
     const SVG_AVATARS = {
       'dong_tho': `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M6 42h36M12 42V24l12-14 12 14v18" stroke-width="2"/>
@@ -1586,6 +1616,31 @@
         <path d="M10 38c6-14 22-14 28 0H10z" fill="currentColor" fill-opacity="0.15"/>
         <path d="M24 8v16M17 16l7-8 7 8"/>
         <circle cx="24" cy="28" r="3" fill="currentColor"/>
+      </svg>`,
+      'thang_diem_phuc_toi': `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M24 6v36M12 42h24"/>
+        <path d="M10 14h28M24 14l-10 6m20-6l-10 6"/>
+        <path d="M8 20c0 4 3 7 6 7s6-3 6-7H8zm20 0c0 4 3 7 6 7s6-3 6-7h-12z" fill="currentColor" fill-opacity="0.12"/>
+        <circle cx="24" cy="10" r="2.5" fill="currentColor"/>
+      </svg>`,
+      'tat_nien': `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="24" cy="24" r="6" fill="currentColor" fill-opacity="0.15"/>
+        <path d="M24 8v5M24 35v5M8 24h5M35 24h5M13 13l4 4M31 31l4 4M13 35l4-4M31 17l4-4"/>
+        <circle cx="24" cy="24" r="2" fill="currentColor"/>
+        <path d="M18 42h12"/>
+      </svg>`,
+      'cung_xe': `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="8" y="18" width="32" height="15" rx="4" fill="currentColor" fill-opacity="0.12"/>
+        <path d="M13 18l4-8h14l4 8M6 26h36"/>
+        <circle cx="16" cy="33" r="4" fill="currentColor"/>
+        <circle cx="32" cy="33" r="4" fill="currentColor"/>
+        <circle cx="24" cy="22" r="2" fill="currentColor"/>
+      </svg>`,
+      'thuong_nguyen': `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="24" cy="24" r="16" stroke-width="2" fill="currentColor" fill-opacity="0.12"/>
+        <path d="M24 8v32M12 24h24"/>
+        <circle cx="24" cy="24" r="9" stroke-dasharray="3 3"/>
+        <circle cx="24" cy="24" r="2.5" fill="currentColor"/>
       </svg>`
     };
 
