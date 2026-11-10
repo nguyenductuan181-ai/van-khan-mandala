@@ -567,6 +567,54 @@
       margin-top: 8px;
       box-shadow: 0 4px 12px rgba(142, 27, 21, 0.25);
     }
+
+    /* DARK MODE (Obsidian Gold & Deep Ruby) */
+    body.dark-mode {
+      --background: #121212;
+      --surface: #121212;
+      --surface-variant: #1E1E1E;
+      --on-surface-variant: #A8A29E;
+      --on-background: #F5F5F4;
+      --on-surface: #F5F5F4;
+      --card-white: #1C1917;
+      --border-subtle: #292524;
+      
+      --primary: #E04B43;
+      --on-primary: #FFFFFF;
+      --primary-container: #3B1210;
+      --on-primary-container: #FFDAD6;
+      
+      --secondary-container: #262114;
+      --on-secondary-container: #FFE082;
+      --accent-gold: #F5C542;
+    }
+    body.dark-mode .prayer-card-body {
+      color: #FFF3D6;
+    }
+    body.dark-mode .compose-card.secondary .card-emoji-box {
+      background: #1E1E1E;
+    }
+    body.dark-mode .top-app-bar {
+      background: #1C1917;
+    }
+    body.dark-mode .m3-navigation-bar {
+      background: #18181B;
+      border-top-color: #27272A;
+    }
+    body.dark-mode .m3-textfield {
+      background: #1C1917;
+      color: #F5F5F4;
+      border-color: #292524;
+    }
+    body.dark-mode .search-input {
+      color: #F5F5F4;
+    }
+    body.dark-mode .theme-toggle-btn {
+      color: var(--accent-gold);
+      background: #27272A;
+      border-color: #3F3F46;
+    }
+
   </style>
 </head>
 <body>
@@ -575,7 +623,15 @@
     <!-- TAB 0: HOME SCREEN -->
     <div class="tab-page active" id="tabHome">
       <header class="screen-header">
-        <h1 class="screen-title">Nghi Thức Việt</h1>
+        
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <h1 class="screen-title" style="margin-bottom: 0;">Nghi Thức Việt</h1>
+          <button class="theme-toggle-btn" id="btnToggleTheme" onclick="toggleTheme()" title="Chuyển chế độ Sáng / Tối" style="width: 38px; height: 38px; border-radius: 9999px; border: 1px solid var(--border-subtle); background: var(--surface-variant); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--on-surface); transition: all 0.2s;">
+            <svg id="themeIconSun" viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            <svg id="themeIconMoon" viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; display: none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </button>
+        </div>
+
         <p class="screen-subtitle">Chuẩn mực nghi lễ, sắm sửa mâm lễ & bài cúng gia tiên thuần phong mỹ tục Việt Nam.</p>
       </header>
 
@@ -938,6 +994,31 @@
 
     // Init
     renderHomeGrid();
-  </script>
+  
+    function initTheme() {
+      var saved = window.safeStorage.getItem('theme_mode');
+      if (saved === 'dark' || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.body.classList.add('dark-mode');
+        updateThemeIcons(true);
+      } else {
+        document.body.classList.remove('dark-mode');
+        updateThemeIcons(false);
+      }
+    }
+    function toggleTheme() {
+      var isDark = document.body.classList.toggle('dark-mode');
+      window.safeStorage.setItem('theme_mode', isDark ? 'dark' : 'light');
+      updateThemeIcons(isDark);
+    }
+    function updateThemeIcons(isDark) {
+      var sun = document.getElementById('themeIconSun');
+      var moon = document.getElementById('themeIconMoon');
+      if (sun && moon) {
+        sun.style.display = isDark ? 'none' : 'block';
+        moon.style.display = isDark ? 'block' : 'none';
+      }
+    }
+
+</script>
 </body>
 </html>
