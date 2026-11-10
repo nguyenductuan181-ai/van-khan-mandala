@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Nghi Thức Cúng</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <script>
+  window.safeStorage = {
+    mem: {},
+    getItem: function(k) { try { return window.localStorage ? window.localStorage.getItem(k) || '' : this.mem[k] || ''; } catch(e) { return this.mem[k] || ''; } },
+    setItem: function(k, v) { try { if (window.localStorage) window.localStorage.setItem(k, v); } catch(e) {} this.mem[k] = v; }
+  };
+  </script>
+
+  <style>
+    /* MATERIAL 3 THEME: ĐỎ HOÀNG GIA - VÀNG ĐỒNG KIM - TRẮNG NGÀ */
+    :root {
+      --primary: #8E1B15;                /* Đỏ đại tự / Đỏ cờ truyền thống sang trọng */
+      --on-primary: #FFFFFF;             /* Trắng tinh */
+      --primary-container: #FFF0EE;      /* Trắng hồng nhạt ửng đỏ nhẹ */
+      --on-primary-container: #4D0A06;   /* Đỏ bã trầu đậm quý phái */
+      
+      --secondary-container: #FEF8E7;    /* Vàng ánh kim nhạt trang nhã */
+      --on-secondary-container: #5C4300; /* Nâu vàng đồng cổ điển */
+      --accent-gold: #C69214;            /* Vàng kim sắc sảo */
+      
+      --background: #FCFAF6;             /* Trắng ngà cổ truyền siêu sáng & sạch */
+      --surface: #FCFAF6;
+      --surface-variant: #F4EFE6;        /* Trắng kem be nhạt */
+      --on-surface-variant: #5C564E;     /* Xám trầm ấm */
+      --on-background: #1C1917;          /* Đen than dễ chịu */
+      --on-surface: #1C1917;
+      --card-white: #FFFFFF;             /* Trắng tinh khôi */
+      --border-subtle: #EFE9DE;          /* Viền be siêu mỏng */
+      
+      --card-radius: 24px;
+      --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-serif: "Merriweather", Georgia, "Times New Roman", serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background-color: var(--background);
+      color: var(--on-background);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+      scrollbar-width: none;
+    }
+    html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+
+    body {
+      min-height: 100vh;
+      padding-bottom: calc(88px + env(safe-area-inset-bottom, 16px));
+      position: relative;
+    }
+
+    .app-viewport {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* TOP CONTAINER */
+    .screen-header {
+      padding: calc(env(safe-area-inset-top, 24px) + 12px) 20px 8px 20px;
+    }
+    .screen-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+    }
+    .screen-subtitle {
+      font-size: 14px;
+      color: var(--on-surface-variant);
+      margin-top: 6px;
+      line-height: 1.45;
+    }
+
+    /* SEARCH BAR (CircleShape) */
+    .search-input-wrap {
+      margin: 16px 20px 12px 20px;
+      background: var(--card-white);
+      border: 1px solid var(--border-subtle);
+      border-radius: 9999px;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 6px rgba(142, 27, 21, 0.03);
+    }
+    .search-input-wrap svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--primary);
+      stroke-width: 2.2;
+      fill: none;
+      flex-shrink: 0;
+    }
+    .search-input {
+      border: none;
+      outline: none;
+      background: none;
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--on-background);
+      width: 100%;
+    }
+    .search-input::placeholder {
+      color: var(--on-surface-variant);
+      opacity: 0.7;
+    }
+
+    /* FILTER CHIPS (Horizontal Scroll, CircleShape) */
+    .chips-scroll-row {
+      display: flex;
+      gap: 8px;
+      padding: 0 20px 18px 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .chips-scroll-row::-webkit-scrollbar { display: none; }
+
+    .filter-chip {
+      white-space: nowrap;
+      padding: 7px 18px;
+      border-radius: 9999px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--on-surface-variant);
+      background: var(--card-white);
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .filter-chip.selected {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(142, 27, 21, 0.25);
+    }
+
+    /* LAZY VERTICAL GRID (GridCells.Fixed(2), spacedBy 12dp) */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 0 20px 24px 20px;
+    }
+
+    .compose-card {
+      height: 160px;
+      border-radius: var(--card-radius);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: transform 0.12s, box-shadow 0.12s;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 3px 10px rgba(142, 27, 21, 0.03);
+    }
+    .compose-card:active {
+      transform: scale(0.96);
+    }
+
+    .compose-card.primary {
+      background-color: var(--card-white);
+      color: var(--on-primary-container);
+    }
+    .compose-card.secondary {
+      background-color: var(--secondary-container);
+      color: var(--on-secondary-container);
+      border-color: rgba(198, 146, 20, 0.25);
+    }
+
+    .card-emoji-box {
+      width: 46px;
+      height: 46px;
+      border-radius: 9999px;
+      background: var(--primary-container);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+      border: 1px solid rgba(142, 27, 21, 0.1);
+    }
+    .compose-card.secondary .card-emoji-box {
+      background: #FFFFFF;
+      border-color: rgba(198, 146, 20, 0.2);
+    }
+
+    .card-title-text {
+      font-size: 14.5px;
+      font-weight: 700;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* SECTION CARD (Card24, surfaceVariant) */
+    .section-card {
+      background: var(--card-white);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--card-radius);
+      padding: 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+    .section-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .section-trailing {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent-gold);
+      background: var(--secondary-container);
+      padding: 2px 8px;
+      border-radius: 9999px;
+    }
+
+    /* DETAIL SCREEN (BackHandler, TopAppBar, Full Scroll) */
+    .detail-view {
+      position: fixed;
+      inset: 0;
+      background: var(--background);
+      z-index: 200;
+      display: none;
+      flex-direction: column;
+      overflow-y: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .detail-view.active { display: flex; }
+    .detail-view::-webkit-scrollbar { display: none; }
+
+    .top-app-bar {
+      padding: calc(env(safe-area-inset-top, 20px) + 8px) 16px 8px 16px;
+      display: flex;
+      align-items: center;
+      background: var(--card-white);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .btn-icon-back {
+      background: none;
+      border: none;
+      padding: 8px;
+      color: var(--primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-icon-back svg {
+      width: 24px;
+      height: 24px;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      fill: none;
+    }
+
+    .detail-content {
+      padding: 14px 20px 120px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .detail-emoji-box {
+      width: 58px;
+      height: 58px;
+      border-radius: 9999px;
+      background: var(--primary-container);
+      border: 1.5px solid rgba(142, 27, 21, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+    }
+
+    .detail-title {
+      font-size: 27px;
+      font-weight: 800;
+      line-height: 34px;
+      color: var(--primary);
+      letter-spacing: -0.3px;
+    }
+    .detail-intro {
+      font-size: 14.5px;
+      line-height: 22px;
+      color: var(--on-surface-variant);
+    }
+
+    /* Offerings Checkbox List with LinearProgress */
+    .progress-bar-wrap {
+      width: 100%;
+      height: 6px;
+      background: var(--surface-variant);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-gold), var(--primary));
+      width: 0%;
+      transition: width 0.2s ease;
+    }
+
+    .offering-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 8px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .offering-row:active {
+      background: var(--surface-variant);
+    }
+    .custom-checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--primary);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.15s;
+      background: #FFFFFF;
+    }
+    .custom-checkbox.checked {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    .custom-checkbox.checked::after {
+      content: "✓";
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .offering-text {
+      font-size: 14.5px;
+      color: var(--on-surface);
+      flex: 1;
+      line-height: 1.4;
+    }
+    .offering-text.done {
+      text-decoration: line-through;
+      color: var(--on-surface-variant);
+      opacity: 0.6;
+    }
+
+    /* Steps numbers (CircleShape primary) */
+    .step-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .step-num-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 9999px;
+      background: var(--primary);
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+      box-shadow: 0 2px 4px rgba(142, 27, 21, 0.2);
+    }
+    .step-desc-text {
+      font-size: 14.5px;
+      line-height: 22px;
+      color: var(--on-surface);
+      flex: 1;
+    }
+
+    /* Prayer Box (secondaryContainer, FontFamily.Serif) */
+    .prayer-card {
+      background: var(--secondary-container);
+      color: var(--on-secondary-container);
+      border: 1px solid rgba(198, 146, 20, 0.3);
+      border-radius: var(--card-radius);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 4px 14px rgba(198, 146, 20, 0.08);
+    }
+    .prayer-card-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 0.2px;
+    }
+    .prayer-card-body {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      line-height: 1.65;
+      color: #2D2205;
+      white-space: pre-wrap;
+    }
+    .prayer-actions-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 6px;
+    }
+    .btn-tonal {
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(142, 27, 21, 0.2);
+    }
+    .btn-outlined {
+      background: #FFFFFF;
+      border: 1px solid var(--accent-gold);
+      color: var(--accent-gold);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* NAVIGATION BAR (Material 3 NavigationBar) */
+    .m3-navigation-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: var(--card-white);
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 12px)) 12px;
+      z-index: 100;
+    }
+    .nav-item-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      color: var(--on-surface-variant);
+      cursor: pointer;
+      padding: 4px 16px;
+      border-radius: 16px;
+      transition: all 0.15s;
+    }
+    .nav-item-btn.selected {
+      color: var(--primary);
+    }
+    .nav-icon-wrap {
+      width: 54px;
+      height: 28px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+    .nav-item-btn.selected .nav-icon-wrap {
+      background: var(--primary-container);
+    }
+    .nav-item-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+    }
+    .nav-label {
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* TAB CONTENT WRAPPER */
+    .tab-page {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+    }
+    .tab-page.active { display: flex; }
+
+    /* PROFILE & ABOUT FORMS */
+    .form-group-field {
+      margin-bottom: 12px;
+    }
+    .field-label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .m3-textfield {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border-subtle);
+      background: var(--card-white);
+      font-size: 15px;
+      color: var(--on-background);
+      font-family: inherit;
+      outline: none;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .m3-textfield:focus {
+      border-color: var(--primary);
+    }
+    .m3-primary-btn {
+      width: 100%;
+      height: 52px;
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 9999px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      box-shadow: 0 4px 12px rgba(142, 27, 21, 0.25);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-viewport">
+
+    <!-- TAB 0: HOME SCREEN -->
+    <div class="tab-page active" id="tabHome">
+      <header class="screen-header">
+        <h1 class="screen-title">Nghi thức cúng</h1>
+        <p class="screen-subtitle">Lễ vật, các bước và văn khấn cho nhà cửa, gia tiên và ngày Tết.</p>
+      </header>
+
+      <!-- Search Field (CircleShape) -->
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" class="search-input" id="inpQuery" placeholder="Tìm nghi thức" oninput="handleSearch(this.value)">
+      </div>
+
+      <!-- Filter Chips (CircleShape) -->
+      <div class="chips-scroll-row">
+        <button class="filter-chip selected" onclick="filterCategory(null, this)">Tất cả</button>
+        <button class="filter-chip" onclick="filterCategory('Nhà Cửa & Đất Đai', this)">Nhà Cửa & Đất Đai</button>
+        <button class="filter-chip" onclick="filterCategory('Thần Tài & Kinh Doanh', this)">Thần Tài & Kinh Doanh</button>
+        <button class="filter-chip" onclick="filterCategory('Gia Tiên & Hiếu Nghĩa', this)">Gia Tiên & Hiếu Nghĩa</button>
+        <button class="filter-chip" onclick="filterCategory('Tết & Lễ Tiết', this)">Tết & Lễ Tiết</button>
+        <button class="filter-chip" onclick="filterCategory('Tâm Linh & Nghiệp Lực', this)">Tâm Linh & Nghiệp Lực</button>
+      </div>
+
+      <!-- LazyVerticalGrid: Cards (Card24, 160.dp) -->
+      <div class="grid-container" id="gridRituals">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- TAB 1: ABOUT (Ý NGHĨA) -->
+    <div class="tab-page" id="tabAbout" style="padding: 24px 20px;">
+      <h1 class="screen-title" style="margin-bottom: 12px;">Tinh thần thờ cúng</h1>
+      <div class="section-card" style="background: var(--card-white); border-left: 4px solid var(--primary);">
+        <h3 style="font-size: 17px; font-weight: 700; color: var(--primary); margin-bottom: 4px;">Tâm thành tất ứng</h3>
+        <p style="font-size: 14.5px; line-height: 22px; color: var(--on-surface);">Lễ vật cốt ở sự thanh tịnh, chu đáo, không câu nệ mâm cao cỗ đầy. Quan trọng nhất là tấm lòng biết ơn, hiếu kính tổ tiên và hộ trì chư vị thần linh.</p>
+      </div>
+      <div class="section-card" style="background: var(--card-white); border-left: 4px solid var(--accent-gold);">
+        <h3 style="font-size: 17px; font-weight: 700; color: var(--accent-gold); margin-bottom: 4px;">Hồi hướng phước đức</h3>
+        <p style="font-size: 14.5px; line-height: 22px; color: var(--on-surface);">Sau khi làm lễ, gia chủ nên phát tâm làm việc thiện lành: phóng sanh, bố thí, giúp đỡ người khó khăn để tích tụ công đức viên mãn.</p>
+      </div>
+      <p style="font-family: var(--font-serif); font-size: 16px; line-height: 26px; color: var(--on-background); margin: 16px 0;">
+        "Tâm là cội nguồn của phước đức. Khi tâm thanh tịnh và phát tâm từ bi hồi hướng, vạn sự ắt cảm ứng hanh thông."
+      </p>
+      <p style="font-size: 12.5px; color: var(--on-surface-variant); line-height: 1.5;">
+        Nội dung tham khảo từ tài liệu của Mandala Phong Thủy – chuyên gia Nguyễn Ngoan. Ứng dụng mang tính tham khảo văn hóa – tín ngưỡng.
+      </p>
+    </div>
+
+    <!-- TAB 2: PROFILE (CỦA TÔI) -->
+    <div class="tab-page" id="tabProfile" style="padding: 24px 20px;">
+      <h1 class="screen-title">Của tôi</h1>
+      <p class="screen-subtitle" style="margin-bottom: 20px;">Thông tin này được điền sẵn vào văn khấn và chỉ lưu trong máy của bạn.</p>
+      
+      <div class="form-group-field">
+        <label class="field-label">Họ tên</label>
+        <input type="text" class="m3-textfield" id="txtTen" placeholder="vd: Nguyễn Đức Tuấn">
+      </div>
+      <div class="form-group-field">
+        <label class="field-label">Năm sinh</label>
+        <input type="text" class="m3-textfield" id="txtNam" placeholder="vd: Kỷ Mão 1999">
+      </div>
+      <div class="form-group-field">
+        <label class="field-label">Địa chỉ</label>
+        <input type="text" class="m3-textfield" id="txtDc" placeholder="vd: Số nhà ..., Phường ..., Quận ...">
+      </div>
+      <div class="form-group-field">
+        <label class="field-label">Ngày cúng</label>
+        <input type="text" class="m3-textfield" id="txtNgay" placeholder="vd: 10 tháng 1 âm lịch, 2027">
+      </div>
+
+      <button class="m3-primary-btn" id="btnSaveProfile" onclick="saveProfile()">Lưu thông tin</button>
+    </div>
+
+    <!-- NAVIGATION BAR (M3 NavigationBar) -->
+    <nav class="m3-navigation-bar">
+      <button class="nav-item-btn selected" id="navBtn0" onclick="switchTab(0)">
+        <div class="nav-icon-wrap">
+          <svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        </div>
+        <span class="nav-label">Nghi thức</span>
+      </button>
+      <button class="nav-item-btn" id="navBtn1" onclick="switchTab(1)">
+        <div class="nav-icon-wrap">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        </div>
+        <span class="nav-label">Ý nghĩa</span>
+      </button>
+      <button class="nav-item-btn" id="navBtn2" onclick="switchTab(2)">
+        <div class="nav-icon-wrap">
+          <svg viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </div>
+        <span class="nav-label">Của tôi</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- DETAIL SCREEN (Exact Material 3 Detail Component) -->
+  <div class="detail-view" id="detailView">
+    <!-- TopAppBar with Back Arrow -->
+    <div class="top-app-bar">
+      <button class="btn-icon-back" onclick="closeDetail()" title="Quay lại">
+        <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      </button>
+    </div>
+
+    <div class="detail-content">
+      <!-- Emoji Circle Box (56.dp) -->
+      <div class="detail-emoji-box" id="detailEmoji">🏗️</div>
+      <!-- Title & Intro -->
+      <h1 class="detail-title" id="detailTitle">Cúng Động Thổ</h1>
+      <p class="detail-intro" id="detailIntro">Nghi thức động thổ nhà ở, văn phòng...</p>
+
+      <!-- SectionCard: Lễ vật -->
+      <div class="section-card">
+        <div class="section-header-row">
+          <span class="section-title">Lễ vật</span>
+          <span class="section-trailing" id="offeringsCount">0/0</span>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="offeringsProgress"></div>
+        </div>
+        <div id="offeringsList" style="display:flex; flex-direction:column; gap:4px;"></div>
+      </div>
+
+      <!-- SectionCard: Nghi thức -->
+      <div class="section-card">
+        <div class="section-header-row">
+          <span class="section-title">Nghi thức</span>
+        </div>
+        <div id="stepsList" style="display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
+
+      <!-- Prayer Box (secondaryContainer, FontFamily.Serif) -->
+      <div class="prayer-card" id="prayerCardBox">
+        <div class="prayer-card-title">Văn khấn</div>
+        <div class="prayer-card-body" id="prayerCardText"></div>
+        <div class="prayer-actions-row">
+          <button class="btn-tonal" id="btnCopyPrayer" onclick="copyPrayer()">Sao chép</button>
+          <button class="btn-outlined" onclick="changePrayerFontSize(-2)">A−</button>
+          <button class="btn-outlined" onclick="changePrayerFontSize(2)">A+</button>
+        </div>
+      </div>
+
+      <!-- SectionCard: Sau lễ -->
+      <div class="section-card">
+        <div class="section-header-row">
+          <span class="section-title">Sau lễ</span>
+        </div>
+        <p style="font-size: 14.5px; line-height: 22px; color: var(--on-surface);" id="afterPrayerText"></p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const RITUALS = [{"id": "dong_tho", "title": "Cúng Động Thổ Công Trình", "category": "Nhà Cửa & Đất Đai", "emoji": "🏗️", "is_secondary": false, "intro": "Động thổ khởi công nhà ở, văn phòng, nhà xưởng, dự án BĐS, cầu đường...", "variants": [{"name": "Nghi Thức Đầy Đủ", "offerings": ["1 bình hoa tươi có mùi thơm (Sen trắng, Huệ, Ly trắng, Hồng đỏ).", "1 đĩa ngũ quả tươi (xoài, thanh long, đu đủ, mãng cầu, quýt).", "1 quả dừa tươi gọt sẵn.", "3 đĩa xôi chè (có thể thêm bánh bao, bánh mì, thức ăn chay tùy tâm).", "3 ly nước trắng tinh khiết.", "3 chung trà nóng thơm.", "3 cây nhang thơm (khuyến khích dùng trầm hương).", "2 cây đèn cầy (nến ly).", "1 đĩa gạo muối trắng sạch."], "steps": ["Bày biện: Bàn cúng đặt chính giữa khu đất hoặc tại hướng sinh khí của công trình.", "Bày biện: Bình hoa đặt bên Đông (tả), mâm ngũ quả đặt bên Tây (hữu) theo nguyên tắc 'Đông Bình Tây Quả'.", "Bày biện: Hàng nước, trà, dừa tươi, xôi chè bày ngay ngắn phía trước lư hương.", "Bày biện: Hai cây đèn cầy đặt hai bên đối xứng, thắp sáng trang nghiêm.", "1. Chọn ngày lành tháng tốt, giờ Hoàng Đạo hợp Dịch Lý - Phong Thủy và tuổi gia chủ.", "2. Chủ nhà hoặc người đại diện hợp tuổi đứng trang nghiêm, quay mặt ra phía trước lô đất.", "3. Thắp 3 nén nhang, 2 đèn cầy, chắp tay thành kính khấn nguyện theo bài văn khấn.", "4. Đọc tụng 3 biến Chú Đại Bi để phước lành thêm thù thắng hồi hướng đến Chư Thần và chúng sinh nơi đây."], "prayer": "Nam Mô A Di Đà Phật (3 lần)\nNam Mô Bổn Sư Thích Ca Mâu Ni Phật (3 lần)\n\nKính lạy Mười Phương Chư Phật, Chư Đại Bồ Tát, Chư Hiền Thánh Tăng, chư vị Thánh Hiền, Chư Vị Long Thiên Hộ Pháp, Thần Linh cai quản chốn này.\nKính thưa Long Mạch Tôn Thần, Sơn Thần, Thổ Địa Chánh Thần và chư Thần cai quản khu vực này.\n\nHôm nay là ngày {NGAY} tháng  năm  (Âm lịch)\nNhằm ngày  tháng  năm  (Dương lịch).\nGiờ tốt: Hoàng Đạo\n\nChúng con tên là: {TEN}\nChủ của lô đất tại địa chỉ: {DIACHI}\n\nChúng con thành tâm sắm sửa, bày ra đây gồm: hoa tươi ngũ quả, trà nước xôi chè, hương đăng thanh tịnh...\nTuy lễ vật đạm bạc nhưng với tấm lòng chí thành, kính dâng chư vị Thần Linh nhân dịp Động Thổ Xây Nhà / Văn Phòng / Xưởng...\n\nNgưỡng mong chư vị Thần Linh giáng lâm, chứng minh lòng thành và lòng biết ơn của chúng con mà thụ hưởng lễ vật và phù hộ độ trì cho:\nĐộng Thổ Xây Nhà được khởi công an lành thuận lợi, khí tiết thuận hòa, âm dương tương hợp, ngũ hành tương sinh, thợ thuyền bình an, chúng sinh nơi đây hoan hỷ.\n\nCầu xin cho mọi sự hanh thông, phước lành hội tụ, để nơi đây trở thành công trình an trú của hạnh phúc, trí tuệ và phước đức.\n\nCon xin phát tâm làm các việc Thiện lành như sau: Phóng sanh, bố thí, cúng dường Tam Bảo\nVà xin hồi hướng phước lành về cho tiền chủ hậu chủ cùng tất cả chúng sinh cư ngụ trên cuộc đất này được an vui.\n\nNam Mô A Di Đà Phật (3 lần)\nNam Mô Bổn Sư Thích Ca Mâu Ni Phật (3 lần)\nNam Mô Công Đức Lâm Bồ Tát Ma Ha Tát (3 lần)\n\n(Cùng nhau phát tâm trì tụng 3 biến Chú Đại Bi để phước lành thêm thù thắng)", "after": "1. Chờ hương tàn được 2/3 thì tiến hành cuốc nhát cuốc đầu tiên (hoặc đặt viên gạch đầu tiên) khởi công. 2. Rải gạo và muối ra xung quanh 4 góc khu đất. 3. Hóa vàng tiền mã (nếu có chuẩn bị). 4. Lễ vật thụ lộc chia sẻ cho anh em thợ thuyền, người thân trong gia đình hoặc làm từ thiện."}]}, {"id": "nhap_trach_to_tien", "title": "Cúng Rước Tổ Tiên Về Nhà Mới", "category": "Nhà Cửa & Đất Đai", "emoji": "🏡", "is_secondary": false, "intro": "Nghi thức thỉnh rước Cửu Huyền Thất Tổ nội ngoại về nhà mới", "variants": [{"name": "Nghi Thức Đầy Đủ", "offerings": ["1 bình bông hoa Cúc hoặc hoa Trang... (hoa không có quá nhiều hương thơm).", "1 đĩa trái cây ngũ quả (xoài + thanh long + đu đủ + mãng cầu + quýt).", "1 trái dừa tươi gọt sẵn.", "3 nén nhang thơm.", "2 đèn cầy ly.", "3 ly nước lọc thanh khiết.", "3 chung trà nguội.", "1 đĩa bánh ngọt + bánh bao + bánh mì và thức ăn chay thanh tịnh."], "steps": ["Bày biện: Bàn cúng đặt trước bàn thờ gia tiên hoặc gian chính phòng khách quay mặt ra cửa.", "Bày biện: Bình hoa và đĩa ngũ quả đặt cân đối hai bên bàn.", "Bày biện: Hàng nước, trà, dừa tươi, bánh trái sắp đặt ấm cúng trang nghiêm.", "1. Chọn ngày lành tháng tốt theo Dịch Lý - Phong Thủy để làm lễ nhập trạch.", "2. Sáng sớm ngày tốt, chủ nhà giữ vẻ mặt tươi vui, hoan hỷ sắp xếp lễ vật lên bàn.", "3. Người đứng cúng quay mặt ra cửa chính / ra đường thắp hương.", "4. Thành kính khấn vái theo bài văn khấn rước Cửu Huyền Thất Tổ."], "prayer": "Nam Mô A Di Đà Phật (3 lần)\n\nKính lạy: ÔNG BÀ TỔ TIÊN - CỬU HUYỀN THẤT TỔ (NỘI NGOẠI 02 BÊN)\n\nHôm nay nhằm ngày {NGAY} tháng  năm  (Âm lịch)\nNhằm ngày  tháng  năm  (Dương lịch).\n\nCon tên là: {TEN}, sinh năm {NAMSINH}.\nChủ nhà tại địa chỉ: {DIACHI}\n\nHôm nay con cùng gia đình dọn về nhà mới, chúng con cung thỉnh Ông Bà Tổ Tiên (cửu huyền thất tổ nội ngoại 2 bên) về nhập trạch cùng với con cháu.\n\nChúng con thành kính mời ông bà thụ hưởng lễ vật dâng cúng này, tuy có đạm bạc nhưng chúng con thành tâm kính mời ông bà.\n\nCầu mong ông bà tổ tiên gia hộ độ trì cho gia đạo gặp nhiều bình an, sức khỏe dồi dào, hòa thuận ấm êm và hạnh phúc trong ngôi gia mới này.\n\nNam Mô A Di Đà Phật (3 lần)", "after": "1. Chờ nhang tàn hẳn. 2. Đem đồ ăn chia sẻ cho cả gia đình cùng thụ lộc hoặc đem cho biếu người xung quanh lấy phước. 3. Giữ gìn không khí ấm cúng, vui tươi trong ngày đầu dọn về nhà mới."}]}, {"id": "an_vi_than_tai", "title": "Cúng An Vị Bàn Thờ Thần Tài", "category": "Thần Tài & Kinh Doanh", "emoji": "🕯️", "is_secondary": false, "intro": "Vị trí đặt bàn thờ & nghi thức chiêu tài lộc theo Phong Thủy", "variants": [{"name": "Nghi Thức Đầy Đủ", "offerings": ["1 bình hoa tươi có mùi thơm (Hồng, Ly, Sen, Huệ, Vạn Thọ...). TUYỆT ĐỐI KHÔNG CÚNG HOA CÚC HÔI, HOA GIẢ.", "1 đĩa ngũ quả tươi (xoài, thanh long, đu đủ, mãng cầu, quýt).", "1 trái dừa tươi gọt vỏ.", "3 cái bánh bao + xôi chè + bánh mì hoặc bánh ngọt.", "3 ly nước sạch + 3 chung trà nóng thơm.", "3 nén nhang thơm + 2 đèn cầy ly sáng ấm.", "LƯU Ý ĐẶC BIỆT TRONG FILE: Không cúng rượu/bia, không đặt tiền vàng mã, không đặt tỏi, không đặt vật phẩm linh tinh thỉnh từ đền chùa bừa bãi."], "steps": ["Bày biện: Vị trí bàn thờ Thần Tài Ông Địa: Đặt nơi thoáng đãng, lưng tựa vững chãi, hướng bao quát cửa ra vào.", "Bày biện: Tượng Thần Tài đặt bên trái, Ông Địa bên phải (từ ngoài nhìn vào).", "Bày biện: Bình hoa đặt bên phải, mâm quả đặt bên trái.", "Bày biện: 3 ly nước, 3 chung trà đặt trước lư hương sạch sẽ.", "1. Chọn ngày lành tháng tốt (hoặc ngày vía Thần Tài mùng 10 Âm lịch) theo Dịch Lý - Phong Thủy.", "2. Vệ sinh lau dọn bàn thờ sạch đẹp, thắp đèn sáng ấm liên tục.", "3. Người đứng cúng quay mặt về hướng Đông Nam (hướng Tài Thần) hoặc hướng hợp bản mệnh gia chủ.", "4. Thắp 3 nén nhang thành kính khấn nguyện xin Thần Linh cai quản cho phép an vị và nhập trạch."], "prayer": "Nam Mô A Di Đà Phật (3 lần)\n\nHôm nay nhằm ngày {NGAY} tháng  năm  (Âm lịch).\nCon tên: {TEN}, sinh năm {NAMSINH}.\nChủ nhà / chủ cơ quan tại địa chỉ: {DIACHI}\n\nXin Sơn Thần, Thổ Địa, Đất Đai Nhơn Trạch, các vị Thần Linh cai quản cuộc đất trong khu vực cho phép con được cúng về nhà mới (hoặc an vị bàn thờ Thần Tài).\n\nKính mời các vị về thụ hưởng những lễ vật dâng cúng này, tuy có đạm bạc nhưng con mời các vị với tấm Lòng Thành Kính.\n\nCầu mong chư vị Thần Linh về nhập trạch và gia hộ cho gia đình / cơ quan gặp nhiều thuận lợi trong công việc, kinh doanh hồng phát, gia đạo bình an, vạn sự hanh thông.\n\nNam Mô A Di Đà Phật (3 lần)", "after": "1. Khi nhang tàn, mang đồ ăn chia sẻ cho cả nhà cùng ăn hoặc cho người khác để phát tán tài lộc. 2. Giữ bàn thờ Thần Tài luôn sáng đèn, sạch sẽ mỗi ngày."}]}, {"id": "khai_truong_dn", "title": "Cúng Khai Trương Doanh Nghiệp", "category": "Thần Tài & Kinh Doanh", "emoji": "🎊", "is_secondary": false, "intro": "Nghi thức mở cửa đón tài lộc, khách hàng và đối tác kinh doanh", "variants": [{"name": "Nghi Thức Đầy Đủ", "offerings": ["1 bình hoa tươi có mùi thơm (Hồng, Ly, Sen, Huệ, Vạn Thọ...).", "1 đĩa trái cây ngũ quả (xoài + thanh long + đu đủ + mãng cầu + quýt).", "1 trái dừa tươi gọt vỏ.", "3 cái bánh bao + xôi chè + bánh mì hoặc bánh ngọt.", "3 ly nước sạch + 3 chung trà nóng thơm.", "3 nén nhang thơm + 2 đèn cầy ly sáng tỏ.", "1 đĩa gạo muối."], "steps": ["Bày biện: Bàn lễ trải khăn trang trọng trước sảnh lớn hoặc cửa chính công ty.", "Bày biện: Bình hoa, mâm ngũ quả, đồ cúng sắp đặt ngay ngắn đón sinh khí.", "Bày biện: Cán bộ nhân viên trang phục chỉnh tề, tinh thần phấn khởi tham gia buổi lễ.", "1. Chọn ngày lành tháng tốt theo Dịch Lý - Phong Thủy phù hợp ngành nghề doanh nghiệp.", "2. Sáng sớm chọn người mở hàng hợp tuổi lãnh đạo, nét mặt tươi vui hoan hỷ bước vào đầu tiên đi một vòng chúc phúc.", "3. Người đại diện lãnh đạo đứng trước bàn lễ quay mặt ra phía trước cửa công ty.", "4. Thắp nhang, chắp tay thành tâm khấn cầu khai trương hồng phát, làm ăn thuận lợi.", "5. Cùng nhau phát tâm trì tụng 3 biến Chú Đại Bi để phước lành thêm thù thắng."], "prayer": "Nam Mô A Di Đà Phật (3 lần)\nNam Mô Bổn Sư Thích Ca Mâu Ni Phật (3 lần)\n\nKính lạy Mười Phương Chư Phật, Chư Đại Bồ Tát, Chư Hiền Thánh Tăng, chư vị Thánh Hiền, Chư Vị Long Thiên Hộ Pháp, Thần Linh cai quản chốn này.\nKính thưa Long Mạch Tôn Thần, Sơn Thần, Thổ Địa Chánh Thần và chư Thần cai quản khu vực này.\n\nHôm nay là ngày {NGAY} tháng  năm  (Âm lịch)\nNhằm ngày  tháng  năm  (Dương lịch).\nGiờ tốt: Hoàng Đạo\n\nChúng con tên là: {TEN}, sinh năm {NAMSINH}.\nĐại diện cho ban lãnh đạo công ty / cơ sở tại địa chỉ: {DIACHI}\n\nChúng con thành tâm sắm sửa, bày ra đây gồm: hoa tươi, trái cây, xôi chè, trà nước...\nTuy lễ vật đạm bạc nhưng với tấm lòng chí thành, kính dâng chư vị Thần Tài, Thổ Địa, Đất Đai Nhơn Trạch, các vị Thần Linh cho phép con được cúng KHAI TRƯƠNG.\n\nNgưỡng mong chư vị Thần Linh giáng lâm, chứng minh lòng thành và lòng biết ơn của chúng con mà thụ hưởng lễ vật và phù hộ độ trì cho:\nKhai trương được hồng phát, làm ăn kinh doanh được hanh thông thuận lợi, công ty trên dưới thuận hòa, tài lộc dồi dào, khách hàng hoan hỷ khi sử dụng sản phẩm dịch vụ của chúng con.\n\nCầu xin cho mọi sự hanh thông, phước lành hội tụ, để nơi đây trở thành công trình an trú của hạnh phúc, trí tuệ và phước đức.\n\nNam Mô A Di Đà Phật (3 lần)\nNam Mô Bổn Sư Thích Ca Mâu Ni Phật (3 lần)\nNam Mô Công Đức Lâm Bồ Tát Ma Ha Tát (3 lần)\n\n(Đồng tâm trì tụng 3 biến Chú Đại Bi)", "after": "1. Chờ nhang tàn thì tiến hành mở cửa đón khách hàng, đối tác. 2. Rải gạo muối xung quanh khu vực cửa ra vào. 3. Mang bánh trái, xôi chè chia lộc cho tập thể cán bộ công nhân viên cùng thưởng thức lấy may."}]}, {"id": "thi_thuc_dong_tho", "title": "Thí Thực Công Trình Động Thổ", "category": "Nhà Cửa & Đất Đai", "emoji": "🌾", "is_secondary": false, "intro": "Cúng bên ngoài khu vực có bóng mát để khởi tâm từ bi và phước báu", "variants": [{"name": "Nghi Thức Đầy Đủ", "offerings": ["1 đĩa ngũ quả tươi.", "Cóc, ổi, mía, bắp, đậu phộng, khoai lang (mỗi loại một ít).", "1 đĩa gạo và muối sạch.", "1 cặp đèn cầy nhỏ thắp sáng.", "3 chén xôi + 3 chén chè ngọt.", "3 chén cháo (nấu hoặc cháo ăn liền đã nêm vừa ăn, để nguội).", "3 ly nước trắng thanh khiết + 3 ly sữa tươi có đường.", "1 bình hoa tươi (hoa Cúc, hoa Vạn Thọ trang nhã)."], "steps": ["Bày biện: Gia chủ trải giấy báo hoặc tấm lót sạch xuống nền đất (không kê bàn cao).", "Bày biện: Bày biện toàn bộ phẩm vật chu đáo, các chén cháo, ly sữa xếp thành hàng phía trước.", "Bày biện: Đĩa khoai bắp ngũ quả xếp xung quanh gọn gàng, thanh tịnh.", "1. Chọn vị trí ngoài ranh giới nhà nơi có bóng râm, bóng mát thoáng đãng.", "2. Bày mâm lễ chu đáo trên nền đất.", "3. Gia chủ hoặc người đại diện đứng trước mâm lễ, quay mặt ra phía đường hoặc nơi thông thoáng.", "4. Thắp nhang, chắp tay thành kính khởi tâm từ bi đọc lời văn khấn thí thực."], "prayer": "Nam Mô A Di Đà Phật! (3 lần)\n\nHôm nay là ngày {NGAY} tháng  năm  (Âm lịch)\nNhằm ngày  tháng  năm  (Dương lịch).\nGiờ cử hành nghi lễ: Hoàng Đạo\n\nChúng con tên là: {TEN}\nLà chủ sở hữu khu đất tại địa chỉ: {DIACHI}\n\nHôm nay, chúng con thành tâm sắm sửa hương hoa phẩm thực, thiết lễ cúng thí thực với tấm lòng từ bi và chí thành.\n\nNguyện kính mời các vị tiền chủ, hậu chủ, thập nhị loại cô hồn và các chúng sinh từng có nhân duyên nương tựa trên khu đất này, hoan hỷ quang lâm thụ hưởng lễ vật.\n\nKính mong quý vị từ bi, nhẹ nhàng chuyển sang nơi an lành khác để tiếp tục tu tập và nương tựa thiện duyên.\n\nChúng con xin phát tâm làm các việc thiện lành như sau: Phóng sanh, bố thí, cúng dường Tam Bảo\nVà xin hồi hướng trọn vẹn phước báu này về cho tiền chủ, hậu chủ cùng tất cả chúng sinh cư ngụ trên cuộc đất này đều được no ấm, an vui và siêu thoát.\n\nCầu xin Mười phương chư Phật, chư Đại Bồ Tát và Tam Bảo gia hộ cho các vị sớm ngày tái sinh cõi lành, quy y Tam Bảo, sớm ngày giác ngộ, thoát hết khổ đau.\n\nCầu xin cho mọi sự hanh thông, công trình xây dựng khởi công bình an thuận lợi.\n\nNam Mô A Di Đà Phật! (3 lần)", "after": "1. Khi hương cháy gần hết thì tiến hành hóa vàng tiền mã (nếu có chuẩn bị). 2. Rải đĩa gạo và muối ra khắp các góc đất xung quanh. 3. Thu dọn sạch sẽ nơi cúng lễ. 4. LƯU Ý BẮT BUỘC TRONG FILE: Cháo và đồ cúng thí thực tuyệt đối KHÔNG sử dụng lại và KHÔNG ĐƯỢC ĂN, đem bỏ đúng nơi quy định."}]}, {"id": "ban_nha_ban_dat", "title": "Cầu Nguyện Bán Nhà Bán Đất", "category": "Nhà Cửa & Đất Đai", "emoji": "📜", "is_secondary": false, "intro": "Quy trình cầu xin 4 giai tầng tâm linh & phát tâm từ thiện hồi hướng", "variants": [{"name": "Nghi Thức Đầy Đủ", "offerings": ["1 bình bông hoa tươi có mùi thơm (Hồng, Ly, Sen, Huệ, Vạn Thọ...).", "1 đĩa trái cây ngũ quả (xoài + thanh long + đu đủ + mãng cầu + quýt).", "1 trái dừa tươi mát.", "3 nén nhang thơm + 2 đèn cầy ly.", "3 ly nước sạch + 3 chung trà ngon thơm.", "3 cái bánh bao + 3 chén xôi chè ngọt ngào + bánh mì hoặc bánh ngọt."], "steps": ["Bày biện: Bày mâm hoa trái xôi chè trang nghiêm ngay tại căn nhà hoặc lô đất cần bán.", "Bày biện: Nếu tại nhà có bàn thờ Phật và Gia Tiên thì dâng lễ trực tiếp lên bàn thờ.", "1. Chọn ngày lành tháng tốt theo Dịch Lý - Phong Thủy để trình lễ.", "2. Gia chủ giữ tâm thế vui tươi, hoan hỷ sắp đặt mâm lễ.", "3. Trình tự cầu nguyện 4 giai tầng tâm linh chuẩn file: (1) Minh Chủ trong nhà (Phật/Chúa/Bồ Tát); (2) Thần chủ quản linh căn; (3) Bản thân linh căn; (4) Cửu Huyền Thất Tổ.", "4. Đứng trước các bàn thờ, thắp nhang và đọc lời phát tâm trích phần trăm tiền bán đất làm từ thiện."], "prayer": "Nam Mô A Di Đà Phật (3 lần)\n\nHôm nay nhằm ngày {NGAY} tháng  năm  (Âm lịch).\nCon tên: {TEN}, sinh năm {NAMSINH}.\nChủ nhà / chủ sở hữu lô đất tại địa chỉ: {DIACHI}\n\nChúng con có lòng thành trình dâng lên đây Mâm Hoa, Trái Cây Tươi, xôi chè, trà ngon thanh khiết...\nKính mời Chư Phật, Chư Vị Thần Linh cai quản bản xứ và Cửu Huyền Thất Tổ về thọ nhận những lễ cúng này, chứng minh cho tấm lòng thành kính của chúng con.\n\nCầu mong xin các vị gia hộ độ trì cho phép con được BÁN CĂN NHÀ / LÔ ĐẤT này được thuận mua vừa bán, gặp được khách hàng thiện chí, thủ tục pháp lý suôn sẻ, giao dịch hanh thông thuận lợi.\n\nSau khi chúng con bán được căn nhà / lô đất này, chúng con xin phát tâm trích số tiền: [SO_TIEN_HOAC_PHAN_TRAM] để làm các công việc thiện nguyện, cúng dường Tam Bảo và giúp đỡ những hoàn cảnh khó khăn hoạn nạn.\n\nMong Chư Vị gia hộ cho mọi việc được sở cầu như ý, sở nguyện tòng tâm.\n\nNam Mô A Di Đà Phật (3 lần)", "after": "1. Khi nhang tàn, mang thức ăn bánh trái chia sẻ cho người thân cùng thụ lộc hoặc đem cho người khác để tán duyên tốt. 2. Giữ đúng lời phát tâm làm từ thiện sau khi giao dịch thành công."}]}, {"id": "oan_gia_trai_chu", "title": "Cúng Trả Nợ Oan Gia Trái Chủ (Tiền Kiếp & Hiện Kiếp)", "category": "Nghi Lễ", "emoji": "🙏", "is_secondary": false, "intro": "Hóa giải chướng ngại nghiệp quả, hóa giải hận thù và hồi hướng công đức", "variants": [{"name": "Nghi Thức Đầy Đủ", "offerings": ["1 đĩa trái cây ngũ quả + cóc + ổi + mía + bắp + đậu phộng + khoai lang (mỗi loại một ít).", "1 cặp đèn cầy nhỏ + 1 đĩa Gạo muối.", "9 chén Xôi Chè.", "9 ly nước trắng.", "9 ly sữa tươi (loại có đường).", "9 chén cháo trắng (loại cháo gói nêm nếm ngon miệng, để nguội).", "9 bình hoa tươi (với 9 bông SEN trắng hoặc hoa Cúc, Vạn Thọ trang nghiêm)."], "steps": ["Bày biện: Bàn lễ rộng rãi, xếp đều 9 chén cháo, 9 chén xôi chè, 9 ly sữa, 9 ly nước, 9 cành hoa sen.", "Bày biện: Không gian cúng trang nghiêm, thanh tịnh, tâm niệm buông bỏ hận thù.", "1. Bày biện toàn bộ 9 bộ lễ vật trang nghiêm lên bàn.", "2. Người đứng cúng quay mặt ra hướng đường hoặc nơi thoáng khí.", "3. Thắp hương thành tâm sám hối tội lỗi tiền kiếp và hiện tại.", "4. Phát nguyện thực hiện một việc thiện thiết thực để hồi hướng công đức."], "prayer": "Nam Mô A Di Đà Phật (3 lần)\n\nHôm nay nhằm ngày {NGAY} tháng  năm  (Âm lịch).\nTôi tên là: {TEN}, sinh năm {NAMSINH}.\nHiện ngụ tại địa chỉ: {DIACHI}\n\nHôm nay tôi có lòng thành bày ra đây phẩm vật khiêm tốn dâng cúng gồm: hoa quả, xôi chè, trà nước, sữa tươi, cháo phẩm...\nKính mời các vị Oan Gia Trái Chủ, nợ nần tiền duyên từ nhiều đời nhiều kiếp cũng như hiện kiếp đồng về đây thụ hưởng lễ vật.\n\nNhư lời Đức Phật hằng dạy: 'Oan gia nên giải, không nên kết'. Hôm nay tôi thành tâm cúng trả lễ cho quý vị, xin chân thành sám hối tất cả những điều lầm lỗi vô minh mà tôi hoặc tổ tiên đã từng gây tổn hại đến quý vị trong quá khứ.\n\nCùng với việc cúng trả lễ hôm nay, tôi xin phát tâm làm một việc thiện lành cụ thể như sau: Phóng sanh, bố thí, cúng dường Tam Bảo\nBao nhiêu phước báu tích tụ được, tôi xin đem hồi hướng hết cho các vị Oan Gia Trái Chủ.\n\nMong quý vị hoan hỷ mở rộng lòng từ, xả bỏ tất cả những oán kết, thù hận từ nhiều đời. Cầu xin Chư Phật mười phương gia hộ cho quý vị sớm tiêu trừ nghiệp chướng, nhẹ nhàng vãng sinh về cõi an lành.\n\nNam Mô A Di Đà Phật (3 lần)", "after": "1. Chờ tàn nhang, mang đĩa gạo muối rải ra phía ngoài. 2. LƯU Ý BẮT BUỘC TRONG FILE: Toàn bộ cháo cúng phải đem bỏ đi, TUYỆT ĐỐI KHÔNG ĐƯỢC ĂN. 3. Nhanh chóng thực hiện việc thiện lành như đã phát nguyện hồi hướng."}]}, {"id": "thoi_noi_day_thang", "title": "Cúng Thôi Nôi Hoặc Đầy Tháng Cho Bé (Chư Thần & Gia Tiên)", "category": "Nghi Lễ", "emoji": "🙏", "is_secondary": false, "intro": "2 phần tạ lễ trang nghiêm cho Chư Thần và Ông Bà Tổ Tiên", "variants": [{"name": "Nghi Thức Đầy Đủ", "offerings": ["A. Phần Cúng Chư Thần: 1 bình hoa tươi có hương thơm (9 bông Sen trắng hoặc Hồng, Ly, Vạn Thọ...), 1 đĩa ngũ quả, 1 cặp đèn cầy nhỏ, 1 đĩa gạo muối, 1 đĩa trầu cau, 3 ly trà nóng, 9 chén xôi chè, 9 ly nước trắng, thức ăn chay (bánh bao, bánh ngọt...).", "B. Phần Cúng Tổ Tiên: 1 bình hoa tươi (Cúc hoặc Trang), 1 đĩa ngũ quả, 1 trái dừa tươi gọt sẵn, 3 nén nhang, 2 đèn cầy ly, 3 ly nước sạch, 3 chung trà nguội, 1 đĩa khoai ngô đậu phộng, bánh bao bánh mì và thức ăn chay."], "steps": ["Bày biện: Bàn cúng Chư Thần đặt trước sảnh hoặc gian chính.", "Bày biện: Bàn cúng Tổ Tiên dâng lên bàn thờ gia tiên trong nhà.", "Bày biện: Xếp ngay ngắn 9 chén xôi chè biểu trưng cho sự viên mãn tròn đầy.", "1. Gia đình chuẩn bị trang nghiêm hai phần lễ cúng Chư Thần và Tổ Tiên.", "2. Người lớn trong nhà đại diện thắp hương, quay mặt ra phía trước khấn tạ lễ Chư Thần.", "3. Sau đó dâng hương bàn thờ Cửu Huyền Thất Tổ nội ngoại hai bên tạ ơn phù hộ cho bé suốt thời gian qua.", "4. Cho bé bắt miếng đồ vật chọn nghề (đối với thôi nôi)."], "prayer": "Nam Mô A Di Đà Phật (3 lần)\n\nKính lạy Chư Vị Thần Linh, Thần Táo cai quản chốn này!\nKính lạy: ÔNG BÀ TỔ TIÊN - CỬU HUYỀN THẤT TỔ (NỘI NGOẠI 02 BÊN)\n\nHôm nay nhằm ngày {NGAY} tháng  năm  (Âm lịch).\nNhân ngày lễ Thôi Nôi (hoặc Đầy Tháng) của cháu: [TEN_BE], sinh ngày [NGAY_SINH_BE].\nGia đình chúng con tại địa chỉ: {DIACHI}\n\nChúng con thành tâm bày ra đây lễ vật dâng cúng thanh tịnh hương hoa trà quả, xôi chè bánh bao... để tạ lễ cho sự gia hộ, chở che độ trì của Chư Vị Thần Linh và Gia Tiên tiền tổ trong suốt thời gian qua cho cháu bé được mạnh khỏe, bình an.\n\nKính mời Chư Vị Thần Linh và Ông Bà Tổ Tiên nội ngoại về chứng giám lòng thành, thụ hưởng lễ vật dâng cúng.\n\nCúi xin các vị tiếp tục che chở phù hộ cho cháu [TEN_BE] luôn được ăn ngon ngủ kỹ, thông minh sáng dạ, mau ăn chóng lớn, thân tâm an lạc, sau này lớn khôn trở thành người con hiếu thảo, có ích cho gia đình và xã hội.\n\nNam Mô A Di Đà Phật (3 lần)", "after": "1. Khi tàn nhang, mang đồ ăn chia sẻ cho cả nhà cùng thụ lộc để chúc phúc cho bé. 2. Riêng đồ cúng gia tiên đem cho người ngoài hoặc hâm nóng mới được ăn."}]}, {"id": "xay_mo_doi_mo", "title": "Cúng Dời Mộ - Xây Mộ Phần Cho Cha Mẹ, Ông Bà, Gia Tiên", "category": "Nghi Lễ", "emoji": "🙏", "is_secondary": false, "intro": "Nghi lễ chuẩn bị theo Mandala Phong Thủy: 9 vật phẩm tôn kính", "variants": [{"name": "Nghi Thức Đầy Đủ", "offerings": ["9 cây hoa sen nước (hoặc sen trắng thanh nhã).", "9 cây nhang thơm (nếu có thêm trầm hương càng tốt).", "9 đèn cầy ly sáng tỏ.", "9 chén cơm trắng sạch xới vun.", "9 chai nước suối tinh khiết.", "9 lá trầu + 9 quả cau tươi bổ đôi.", "1 bàn tròn lớn để bày biện lễ vật và 1 bàn nhỏ phía trước để đặt kinh tụng trì.", "LƯU Ý TRONG FILE: Nghi thức bốc mộ và nhập mộ lễ vật đều chu đáo như nhau."], "steps": ["Bày biện: Bàn lễ lớn kê trang nghiêm trước khu đất xây mộ hoặc huyệt mộ mới.", "Bày biện: Xếp hàng ngay ngắn 9 bông sen, 9 chén cơm, 9 chai nước suối, 9 trầu cau và đèn cầy ấm cúng.", "1. Chọn ngày giờ lành, tránh các ngày đại kỵ âm phần theo Dịch Lý - Phong Thủy.", "2. Thầy lễ hoặc con cháu đại diện đứng trước bàn lễ quay mặt về phía khu mộ.", "3. Thắp nhang đèn, chắp tay thành kính khấn trình Chư Thần Thổ Địa sở tại và gia tiên.", "4. Đọc kinh cầu siêu hồi hướng cho vong linh người đã khuất được an táng yên nghỉ."], "prayer": "Nam Mô A Di Đà Phật (3 lần)\n\nKính lạy: Mười Phương Chư Phật, Chư Đại Bồ Tát, Chư Vị Tôn Thần bản xứ!\nKính lạy: ÔNG BÀ TỔ TIÊN - CỬU HUYỀN THẤT TỔ (NỘI NGOẠI 02 BÊN)\n\nHôm nay nhằm ngày lành tháng tốt, ngày {NGAY} tháng  năm  (Âm lịch).\nTôi tên là: {TEN}, sinh năm {NAMSINH}.\nĐại diện cho gia đình dòng tộc tại địa chỉ: {DIACHI}\n\nHôm nay nhân ngày tiến hành công việc: Xây Mộ / Dời Mộ / Bốc Mộ cho người thân của chúng con là: [TEN_NGUOI_MAT], an nghỉ tại khu nghĩa trang / cuộc đất: [DIA_CHI_MO].\n\nChúng con thành tâm sắm sửa, bày ra đây lễ vật gồm: 9 bông sen, 9 chén cơm thanh sạch, trầu cau trà nước đăng hoa phẩm thực...\nTrước kính tạ các vị Tôn Thần cai quản khu đất cho phép chúng con thực hiện công việc khởi công xây cất phần mộ.\nSau kính cẩn dâng lên Ông Bà Tổ Tiên và vong linh người đã khuất thụ hưởng lễ vật dâng cúng này, tuy đạm bạc nhưng với trọn tấm lòng chí thành hiếu thảo.\n\nNguyện cầu cho vong linh [TEN_NGUOI_MAT] được an nghỉ nơi cõi vĩnh hằng, sớm tiêu diêu miền cực lạc, siêu sinh tịnh độ và phù hộ độ trì cho con cháu dòng họ bình an, đoàn kết, hưng vượng.\n\nNam Mô A Di Đà Phật (3 lần)", "after": "1. Sau khi hương tàn mới được tiến hành động thổ cất mả hoặc hạ quách tiểu. 2. Đồ ăn cúng nơi nghĩa địa đem cho đi bên ngoài hoặc nếu mang về nhà phải hâm nóng thật kỹ mới được ăn."}]}, {"id": "mung1_ram", "title": "Bài Cúng Mùng 1 & Rằm Hàng Tháng", "category": "Nghi Lễ", "emoji": "🙏", "is_secondary": false, "intro": "Lễ Sóc Vọng Đầu Tháng & Giữa Tháng Tại Gia", "variants": [{"name": "Nghi Thức Đầy Đủ", "offerings": ["Hương (nhang thơm sạch, 3 nén hoặc 1 nén)", "Hoa tươi: Cúc vàng, huệ trắng hoặc hoa sen (tránh hoa giả, hoa dại)", "Quả tươi: Đĩa ngũ quả thanh khiết, quả lành lặn, màu sắc tươi sáng", "Nước sạch: 3 hoặc 5 chén nước trong tinh khiết", "Trầu cau: 3 lá trầu, 3 quả cau nguyên cuống tươi", "Đèn nến: Đôi nến hoặc đèn dầu thắp sáng", "Lễ mặn hoặc chay: Tùy duyên (xôi chè, giò chả, cơm trắng sạch sẽ)"], "steps": ["Bao sái, lau dọn bàn thờ sạch sẽ bằng nước gừng hoặc quế ấm trước giờ lễ.", "Người làm lễ tắm gội sạch sẽ, trang phục chỉnh tề, giữ thân – khẩu – ý thanh tịnh.", "Thắp đèn nến trước, châm hương sau. Cắm hương ngay ngắn giữa bát hương.", "Chắp tay trước ngực ngang tim, tĩnh tâm hít thở sâu 3 nhịp định thần.", "Đọc văn khấn với giọng âm vang, cung kính, vừa đủ nghe, tâm niệm hướng về cội nguồn.", "Sau khi khấn xong vái 3 vái. Đợi tàn tuần hương (hoặc 2/3 nén) thì mới lễ tạ và hạ lễ."], "prayer": "Nam mô A Di Đà Phật! (3 lần)\nCon lạy chín phương Trời, mười phương Chư Phật, Chư Phật mười phương.​\nCon kính lạy Đức Đương Cảnh Thành Hoàng Chư Vị Đại Vương.​\nCon kính lạy chư vị Thần linh, Thổ địa, Long Mạch tôn thần cai quản trong xứ này.​\nCon kính lạy chư vị Tiền chủ, Hậu chủ đất này.​\nCon kính lạy chư gia tiên nội ngoại, Cao Tằng Tổ Khảo, Cao Tằng Tổ Tỷ, Tổ Cô, Cố Ngoại, cùng liệt vị Tổ tiên hai bên dòng họ…\n\nTín chủ con là: ……………………. Ngụ tại: …………………….\n\nHôm nay là ngày mùng Một / ngày Rằm tháng …. năm ………….. âm lịch, nhằm ngày Sóc vọng đầu tháng / giữa tháng, là dịp thanh lọc tâm ý, dâng hương tưởng niệm, kết nối tâm linh với Tổ tiên – Thần linh.\nChúng con thành tâm sắm sửa lễ mọn hương hoa, nước sạch, gạo muối, trà quả… kính dâng trước án. Cúi xin các Ngài giáng lâm thụ hưởng, chứng giám lòng thành.\nCũng xin kính mời các vị Tổ tiên nội ngoại, Tổ Khảo, Tổ Tỷ, Bá thúc, Huynh đệ, Cô Di, Tỷ Muội cùng toàn thể chư hương linh dòng họ hai bên đồng lai hâm hưởng.\nChúng con lễ bạc tâm thành, cúi xin được phù hộ độ trì.", "after": "Chờ hương tàn 2/3 thì tiến hành tạ lễ, hóa vàng tiền mã và thụ lộc bình an."}]}, {"id": "gio_to_tien", "title": "Bài Cúng Giỗ Tổ Tiên", "category": "Nghi Lễ", "emoji": "🙏", "is_secondary": false, "intro": "Ngày Húy Nhật Tưởng Nhớ Bậc Sinh Thành Dưỡng Dục", "variants": [{"name": "Nghi Thức Đầy Đủ", "offerings": ["Mâm cỗ mặn truyền thống (hoặc cỗ chay thanh tịnh) chế biến trang nghiêm, sạch sẽ", "Hương thơm, đèn cầy (hoặc nến đỏ đôi bên)", "Hoa tươi trang nghiêm (hoa cúc, huệ)", "Mâm ngũ quả tươi ngon, tròn đầy", "Rượu trắng, nước tinh khiết, trà thơm, trầu cau nguyên têm", "Vàng mã gia tiên (tiền vàng cổ truyền, y phục dâng Tổ tiên theo phong tục)"], "steps": ["Sắp mâm lễ ngay ngắn trước linh tọa của người quá cố và bàn thờ gia tiên.", "Trưởng nam hoặc đại diện gia đình thắp đèn, đốt 3 nén hương cung kính.", "Chắp tay khấn nguyện rước đích danh Hương linh người quá cố về phối hưởng.", "Mời các vị Tổ tiên nội ngoại, Tiền chủ Hậu chủ đất cát cùng về chứng giám.", "Toàn thể con cháu tề tựu trang nghiêm chắp tay vái lạy theo thứ bậc gia tộc.", "Đợi tàn hết 1 tuần hương, châm chén nước chén rượu lần hai, sau đó hóa vàng mã rồi mới thụ lộc."], "prayer": "Nam mô A Di Đà Phật! (3 lần)\nCon lạy chín phương Trời, mười phương Chư Phật, Chư Phật mười phương.\nCon kính lạy Đức Đương Cảnh Thành Hoàng Chư Vị Đại Vương.\nCon kính lạy chư vị Thần linh, Thổ địa, Long Mạch tôn thần cai quản trong xứ này.\nCon kính lạy chư vị Tiền chủ, Hậu chủ đất này.\nCon kính lạy chư gia tiên nội ngoại, Cao Tằng Tổ Khảo, Cao Tằng Tổ Tỷ, liệt vị Tổ tiên dòng họ………………………..\n\nTín chủ (chúng) con là: ……………………………………………………………\nNgụ tại: ……………………………………………………………………………..\n\nHôm nay là ngày… tháng… năm… âm lịch, nhằm ngày giỗ hết của……………… (ghi rõ quan hệ: cha, mẹ, ông, bà...).\nNghĩ nhớ người xưa khuất bóng, trần gian xa cách, âm dung chẳng thấy. Năm tháng đổi dời, lại đến kỳ tưởng niệm. Công ơn dưỡng dục sâu dày, nghĩa tình sinh thành như trời như biển. Dẫu đã về nơi cõi vắng, tình con cháu vẫn khắc ghi chẳng nguôi.\nChúng con và toàn thể con cháu trong gia đình, nhất tâm kính cẩn sắm sửa lễ vật, hương đăng hoa quả, dâng nén tâm hương dãi tỏ lòng thành.\n\nThành khẩn kính mời:\nHương linh của…………….. (tên người mất), sinh năm… mất ngày… tháng…… .năm…, mộ phần táng tại………………………………………………\nKính xin người linh thiêng giáng về linh sàng, chứng giám lòng thành, thụ hưởng lễ vật, tiếp nhận hương hoa.\nTín chủ con lại kính mời các vị Tổ tiên nội ngoại hai bên, chư vị Tổ Khảo, Tổ Tỷ, Bá thúc, Huynh đệ, Cô Di, Tỷ Muội, cùng toàn thể chư hương linh dòng họ nội ngoại đồng lai hâm hưởng.\nTín chủ cũng thành kính mời các vị Tiền chủ, Hậu chủ, cùng chư hương linh không nơi nương tựa đang trú ngụ tại đất này đồng về hưởng lộc.\nChúng con lễ bạc tâm thành, cúi xin được phù hộ độ trì.", "after": "Chờ hương tàn 2/3 thì tiến hành tạ lễ, hóa vàng tiền mã và thụ lộc bình an."}]}, {"id": "vulan_trongnha", "title": "Bài Cúng Rằm Tháng Bảy (Trong Nhà)", "category": "Nghi Lễ", "emoji": "🙏", "is_secondary": false, "intro": "Vu Lan Báo Hiếu & Xá Tội Vong Nhân Tiết Trung Nguyên", "variants": [{"name": "Nghi Thức Đầy Đủ", "offerings": ["Hương hoa, đăng trà, quả phẩm thanh tịnh", "Mâm cơm chay hoặc mặn dâng Tổ tiên dòng họ", "Chè kho, xôi vò, hoa quả mùa thu ngọt lành", "Trà sen hoặc trà mạn thơm, nước thanh khiết", "Quần áo, vàng mã gia tiên đóng hộp ghi rõ tên họ người nhận"], "steps": ["Cúng Phật trước: Dâng hương hoa, quả phẩm, tụng kinh Vu Lan hoặc niệm danh hiệu Đức Địa Tạng.", "Cúng Gia Tiên: Bày biện mâm cúng trang trọng tại bàn thờ gia tiên trong nhà.", "Tín chủ ăn mặc trang nghiêm, dâng nén tâm hương tưởng nhớ công ơn sinh thành dưỡng dục cha mẹ nhiều đời.", "Đọc văn khấn Vu Lan với tâm niệm báo ân, nguyện cầu cha mẹ hiện tiền tăng long phúc thọ, cửu huyền thất tổ siêu sinh tịnh độ.", "Lễ tạ và hóa sớ, vàng mã dâng Tổ tiên vào ban ngày (trước giờ cúng cô hồn)."], "prayer": "Nam mô A Di Đà Phật! (3 lần)\nCon lạy chín phương Trời, mười phương Chư Phật, Chư Phật mười phương.​\nCon kính lạy Đức Địa Tạng Vương Bồ Tát – vị Đại nguyện cứu độ các hương linh.​\nCon kính lạy Đức Đương Cảnh Thành Hoàng, chư vị Đại Vương linh thiêng.​\nCon kính lạy chư vị Thần linh, Thổ địa, Long Mạch tôn thần cai quản trong xứ này.​\nCon kính lạy chư vị Tiền chủ, Hậu chủ đất này.​\nCon kính lạy chư gia tiên nội ngoại, Cao Tằng Tổ Khảo, Cao Tằng Tổ Tỷ, Tổ Cô, Cố Ngoại, liệt vị Tổ tiên dòng họ…​\nCon kính mời chư hương linh các vong linh không nơi nương tựa, cô hồn u uẩn nhân tiết Trung Nguyên được mở cửa âm ty, đồng lai hâm hưởng.\n\nTín chủ con là: …………………………………………………………………….​\nNgụ tại: …………………………………………………………………………….\n\nHôm nay là ngày Rằm tháng Bảy năm…….. âm lịch, nhằm tiết Trung Nguyên – Vu Lan báo hiếu – mùa mở cửa xá tội vong nhân.​\nChúng con thành tâm sắm sửa lễ vật hương đăng, nước trong gạo muối, hoa quả phẩm oản, cháo thí thực và lòng chí kính, dâng lên trước án.\nCúi xin chư vị linh thiêng giáng lâm thụ hưởng, chứng giám lòng thành, tế độ cho gia đạo bình an, âm siêu dương khánh.", "after": "Chờ hương tàn 2/3 thì tiến hành tạ lễ, hóa vàng tiền mã và thụ lộc bình an."}]}, {"id": "cohon_ngoaitroi", "title": "Bài Cúng Rằm Tháng Bảy (Ngoài Trời)", "category": "Nghi Lễ", "emoji": "🙏", "is_secondary": false, "intro": "Thí Thực Chúng Sinh & Vong Linh Phiêu Bạt Tiết Trung Nguyên", "variants": [{"name": "Nghi Thức Đầy Đủ", "offerings": ["Cháo trắng loãng (nấu loãng múc vào các bát nhỏ hoặc cốc)", "Gạo sạch và muối trắng (đựng trên đĩa nhỏ)", "Bỏng ngô, bánh đa, khoai lang luộc, ngô luộc, bánh kẹo hoa quả nhỏ", "Tiền vàng mã lẻ, áo binh, tiền giấy chúng sinh", "Nước sạch tinh khiết, 3 nén nhang, nến cầy cốc nhỏ"], "steps": ["Vị trí cúng: Đặt bàn lễ ngoài sân, hiên nhà, hoặc cổng ngõ (TUYỆT ĐỐI không đặt trong nhà).", "Thời điểm: Tiến hành lúc chiều tối muộn (sau 17h, khi mặt trời lặn ánh dương suy giảm).", "Khi khấn: Giữ tâm từ bi thương xót chúng sinh lang thang đói khát, không mong cầu danh lợi cá nhân.", "Kết thúc lễ: Rải đĩa gạo muối ra 4 phương 8 hướng để bố thí, tuyệt đối không mang đồ lễ vào lại trong nhà.", "Hóa vàng mã tại chỗ và vái lạy tiễn đưa cô hồn quy hồi bản cảnh."], "prayer": "Nam mô A Di Đà Phật!​\nNam mô A Di Đà Phật!​\nNam mô A Di Đà Phật!\n\nCon xin kính lạy:​\n– Chư Phật mười phương, Chư Bồ Tát, đặc biệt là Đức Địa Tạng Vương Bồ Tát – vị Đại nguyện cứu độ chúng sinh nơi cõi âm.​\n– Chư vị Hộ pháp, Thiện thần giữ gìn cõi giới.​\n– Chư vị vong linh không nơi nương tựa, oan hồn u uẩn, cô hồn dã quỷ, ngạ quỷ lang thang nơi xứ này và các nơi lân cận.\n\nTín chủ con là: ……………………………………………………………​\nNgụ tại: ……………………………………………………………………\n\nHôm nay là Rằm tháng Bảy năm ……….… âm lịch, tiết Trung Nguyên mở cửa âm ty, ngày xá tội vong nhân.​\nChúng con thành tâm thiết lễ, dâng hương, nước sạch, gạo muối, cháo trắng, bánh kẹo, tiền vàng, quần áo âm – cúng thí thực cho các cô hồn, hương linh không nơi nương tựa khắp mười phương.\nCúi xin chư vị hiện linh, đến đây thọ thực, tiếp nhận tấm lòng thành, không tranh giành nhau, không kết oán, không phá hoại người trần, sớm siêu thoát về nơi an lành.", "after": "Chờ hương tàn 2/3 thì tiến hành tạ lễ, hóa vàng tiền mã và thụ lộc bình an."}]}, {"id": "than_tai", "title": "Khấn Thần Tài Mùng 10 & Hàng Ngày", "category": "Thần Tài & Kinh Doanh", "emoji": "💰", "is_secondary": false, "intro": "Mùng 10 Hàng Tháng & Nghi Lễ Khởi Sự Kinh Doanh", "variants": [{"name": "Nghi Thức Đầy Đủ", "offerings": ["Bình hoa tươi: Hoa đồng tiền, hoa hồng môn hoặc hoa cúc vàng kim", "Đĩa ngũ quả: Tròn trịa, màu sắc tươi sáng tượng trưng ngũ hành", "5 chén nước sạch xếp hình chữ thập (tượng trưng Ngũ phương, Ngũ thổ)", "Bộ tam sên (tùy nghi): Thịt heo luộc, trứng luộc, tôm hoặc cua", "Trầu cau tươi, thuốc lá, 1 đĩa tỏi tươi (5 củ xua đuổi tà khí)", "Đèn dầu hoặc nến, hương cuốn tàn thơm mát"], "steps": ["Lau dọn bàn thờ Thần Tài mỗi sáng bằng khăn sạch thấm rượu gừng ấm.", "Thay 5 chén nước mới tinh khiết mỗi ngày trước giờ mở cửa kinh doanh.", "Thắp 1 hoặc 3 nén nhang thơm, chắp tay định tâm quán chiếu hanh thông tài vận.", "Đọc văn khấn rõ ràng, cầu xin công việc buôn bán thuận buồm xuôi gió, khách hàng tín nhiệm, tài lộc hanh thông.", "Nghiêm cấm để thú cưng quậy phá trước ban Thần Tài."], "prayer": "Nam mô A Di Đà Phật! (3 lần)\n\nCon kính lạy chín phương Trời, mười phương Chư Phật, Chư Phật mười phương.\nCon kính lạy ngài Hoàng Thiên Hậu Thổ chư vị Tôn thần.\nCon kính lạy ngài Đông Trù Tư mệnh Táo phủ Thần quân.\nCon kính lạy Thần tài vị tiền.\nCon kính lạy các ngài Thần linh, Thổ địa cai quản trong xứ này.\n\nTín chủ con là: ………………………………………\nNgụ tại: ………………………………………………\n\nHôm nay là ngày…… tháng…… năm…… âm lịch.\nTín chủ con thành tâm sắm sửa lễ vật, hương hoa trà quả, kim ngân trà tử dâng lên trước án, kính cẩn thỉnh mời ngài Thần Tài vị tiền.\nCúi xin ngài thương xót tín chủ, giáng lâm trước án, chứng giám lòng thành, thụ hưởng lễ vật.\nPhù trì cho tín chủ chúng con kinh doanh đắc tài đắc lộc, vạn sự hanh thông, công việc thuận buồm xuôi gió, khách hàng tín nhiệm, buôn may bán đắt, gia đạo bình an phúc thọ khang ninh.\n\nNam mô A Di Đà Phật! (3 lần)", "after": "Chờ hương tàn 2/3 thì tiến hành tạ lễ, hóa vàng tiền mã và thụ lộc bình an."}]}, {"id": "giao_thua", "title": "Văn Khấn Đêm Giao Thừa (Trừ Tịch)", "category": "Nghi Lễ", "emoji": "🙏", "is_secondary": false, "intro": "Đêm 30 Tết — Tống Cựu Nghinh Tân Ngoài Trời & Trong Nhà", "variants": [{"name": "Nghi Thức Đầy Đủ", "offerings": ["Mâm cúng ngoài trời (Nghênh tân Thái Tuế): Gà trống hoa ngậm hoa hồng (hoặc cỗ mặn/chay), xôi gấc đỏ, bánh chưng, mâm ngũ quả, rượu trà, tiền vàng mã trừ tịch.", "Mâm cúng trong nhà (Gia tiên tiền tổ): Mâm cỗ tết cổ truyền, bánh chưng, giò lụa, mứt tết, hoa tươi, hương trầm ngát."], "steps": ["Lễ Giao Thừa ngoài trời: Bày lễ trước cửa nhà lúc 23h45. Đúng 0h00 thắp hương khấn tiễn Vương hành khiển năm cũ, nghênh đón Vương hành khiển năm mới.", "Lễ Giao Thừa trong nhà: Sau khi làm lễ ngoài trời, trở vào bàn thờ gia tiên thắp hương khấn Tổ tiên phù hộ gia quyến bình an cát tường.", "Cả gia đình mở toang cửa nhà đón gió mới, giữ lời nói hòa nhã, hoan hỷ đón nhận tài lộc đầu xuân."], "prayer": "Nam mô A Di Đà Phật! (3 lần)\n\nCon kính lạy chín phương Trời, mười phương Chư Phật, Chư Phật mười phương.\nCon kính lạy Đức Đương niên Thiên phủ chí tôn Kim niên Đương cai Thái Tuế Chí đức Tôn thần.\nCon kính lạy Đức Bản cảnh Thành hoàng Chư vị Đại Vương.\nCon kính lạy Đức Bản xứ Thần linh Thổ địa. Ngài Định phúc Táo quân. Các ngài Ngũ phương, Ngũ thổ, Long mạch Tôn thần.\n\nTín chủ con là: ………………………………………\nNgụ tại: ………………………………………………\n\nPhút thiêng liêng Giao thừa vừa tới, năm cũ qua đi, năm mới vừa sang, tam dương khai thái, vạn tượng canh tân.\nChúng con thành tâm sắm lễ hương hoa cơm canh, dâng lên trước án.\nCúi xin các Ngài giáng lâm trước án thụ hưởng lễ vật, trừ tai xua họa, gia hộ cho toàn gia bình an, khang thái, vạn sự tốt lành.\n\nNam mô A Di Đà Phật! (3 lần)", "after": "Chờ hương tàn 2/3 thì tiến hành tạ lễ, hóa vàng tiền mã và thụ lộc bình an."}]}, {"id": "tao_quan", "title": "Văn Khấn Cúng Ông Công Ông Táo", "category": "Tết & Lễ Tiết", "emoji": "🐟", "is_secondary": false, "intro": "Lễ Tiễn Táo Quân Chầu Trời Cuối Năm", "variants": [{"name": "Nghi Thức Đầy Đủ", "offerings": ["3 bộ mũ áo Táo Quân (2 mũ ông có cánh chuồn, 1 mũ bà không có cánh chuồn) kèm hia hài", "Cá chép sống (3 con bơi trong chậu nước sạch) làm phương tiện cho Táo chầu trời", "Mâm cỗ mặn (xôi gà, nem rán, canh măng) hoặc mâm cỗ chay thanh nhẹ", "Đĩa hoa quả tươi, trầu cau, chén rượu, tiền vàng mã Táo Quân", "Hương trầm thơm ngát, nến sáng đôi bên"], "steps": ["Dọn dẹp bếp núc, lau bàn thờ Táo Quân sạch sẽ tinh tươm trước khi làm lễ.", "Bày biện mâm lễ trang trọng tại bàn thờ Táo hoặc bàn thờ gia tiên trong nhà.", "Thắp hương, đọc bài khấn tiễn ngài Đông trù Tư mệnh Táo phủ Thần quân về trời tâu việc lành.", "Sau khi tàn hương, hóa vàng mã mũ áo, sau đó mang cá chép ra sông/hồ nước sạch phóng sinh nhẹ nhàng với tâm từ bi."], "prayer": "Nam mô A Di Đà Phật! (3 lần)\n\nCon kính lạy chín phương Trời, mười phương Chư Phật, Chư Phật mười phương.\nCon kính lạy ngài Đông trù Tư mệnh Táo phủ Thần quân.\n\nTín chủ con là: ………………………………………\nNgụ tại: ………………………………………………\n\nHôm nay ngày 23 tháng Chạp năm…… âm lịch, tín chủ chúng con thành tâm sắm sửa hương hoa phẩm vật, xiêm hài áo mũ kính dâng trước án.\nKính cẩn tiễn đưa Tôn thần ngài cưỡi chép bay về Thiên đình.\nCúi xin Tôn thần bao dung gia ân, tâu bày việc lành, che chở việc vụng dại, phù hộ cho gia đạo năm mới an khang thịnh vượng.\n\nNam mô A Di Đà Phật! (3 lần)", "after": "Chờ hương tàn 2/3 thì tiến hành tạ lễ, hóa vàng tiền mã và thụ lộc bình an."}]}];
+
+    let info = {
+      ten: safeStorage.getItem('info_ten') || '',
+      nam: safeStorage.getItem('info_nam') || '',
+      dc: safeStorage.getItem('info_dc') || '',
+      ngay: safeStorage.getItem('info_ngay') || ''
+    };
+
+    let activeTab = 0;
+    let currentQuery = '';
+    let selectedCat = null;
+    let activeRitual = null;
+    let checkedOfferings = [];
+    let prayerFontSize = 18;
+
+    // Fill placeholder text {TEN}, {NAMSINH}, {DIACHI}, {NGAY}
+    function fill(t, i) {
+      function v(s) { return (!s || s.trim() === '') ? '……' : s; }
+      return t.replace(/{TEN}/g, v(i.ten))
+              .replace(/{NAMSINH}/g, v(i.nam))
+              .replace(/{DIACHI}/g, v(i.dc))
+              .replace(/{NGAY}/g, v(i.ngay));
+    }
+
+    function switchTab(idx) {
+      activeTab = idx;
+      document.querySelectorAll('.tab-page').forEach((p, i) => {
+        p.classList.toggle('active', i === idx);
+      });
+      document.querySelectorAll('.nav-item-btn').forEach((b, i) => {
+        b.classList.toggle('selected', i === idx);
+      });
+      if (idx === 2) {
+        document.getElementById('txtTen').value = info.ten;
+        document.getElementById('txtNam').value = info.nam;
+        document.getElementById('txtDc').value = info.dc;
+        document.getElementById('txtNgay').value = info.ngay;
+      }
+    }
+
+    function renderHomeGrid() {
+      const grid = document.getElementById('gridRituals');
+      const filtered = RITUALS.filter(r => {
+        const matchCat = (selectedCat === null || r.category === selectedCat);
+        const matchQuery = (currentQuery === '' || r.title.toLowerCase().includes(currentQuery.toLowerCase()));
+        return matchCat && matchQuery;
+      });
+
+      grid.innerHTML = filtered.map(r => {
+        const containerClass = r.is_secondary ? 'secondary' : 'primary';
+        return `
+          <div class="compose-card ${containerClass}" onclick="openDetail('${r.id}')">
+            <div class="card-emoji-box">${r.emoji}</div>
+            <div class="card-title-text">${r.title}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function handleSearch(val) {
+      currentQuery = val.trim();
+      renderHomeGrid();
+    }
+
+    function filterCategory(cat, btn) {
+      selectedCat = cat;
+      document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      renderHomeGrid();
+    }
+
+    /* DETAIL SCREEN & BACKHANDLER */
+    function openDetail(id) {
+      const r = RITUALS.find(item => item.id === id);
+      if (!r) return;
+      activeRitual = r;
+
+      const v = r.variants[0];
+      checkedOfferings = new Array(v.offerings.length).fill(false);
+
+      document.getElementById('detailEmoji').textContent = r.emoji;
+      document.getElementById('detailTitle').textContent = r.title;
+      document.getElementById('detailIntro').textContent = r.intro;
+
+      // Offerings
+      renderOfferings(v.offerings);
+
+      // Steps
+      const stepsContainer = document.getElementById('stepsList');
+      stepsContainer.innerHTML = v.steps.map((s, idx) => `
+        <div class="step-row">
+          <div class="step-num-badge">${idx + 1}</div>
+          <div class="step-desc-text">${s}</div>
+        </div>
+      `).join('');
+
+      // Prayer Text
+      const prayerBox = document.getElementById('prayerCardBox');
+      if (v.prayer && v.prayer.trim() !== '') {
+        prayerBox.style.display = 'flex';
+        const filledText = fill(v.prayer, info);
+        document.getElementById('prayerCardText').textContent = filledText;
+        document.getElementById('btnCopyPrayer').textContent = 'Sao chép';
+      } else {
+        prayerBox.style.display = 'none';
+      }
+
+      // After
+      document.getElementById('afterPrayerText').textContent = v.after;
+
+      document.getElementById('detailView').classList.add('active');
+      document.getElementById('detailView').scrollTop = 0;
+
+      // Push history for BackHandler
+      try {
+        if (!history.state || history.state.modal !== 'detail') {
+          history.pushState({ modal: 'detail', id: id }, '', '#detail');
+        }
+      } catch(e) {}
+    }
+
+    function renderOfferings(offerings) {
+      const listContainer = document.getElementById('offeringsList');
+      const countEl = document.getElementById('offeringsCount');
+      const progEl = document.getElementById('offeringsProgress');
+
+      const done = checkedOfferings.filter(Boolean).length;
+      countEl.textContent = `${done}/${offerings.length}`;
+      const pct = offerings.length > 0 ? (done / offerings.length) * 100 : 0;
+      progEl.style.width = pct + '%';
+
+      listContainer.innerHTML = offerings.map((o, i) => {
+        const isDone = checkedOfferings[i];
+        return `
+          <div class="offering-row" onclick="toggleOffering(${i})">
+            <div class="custom-checkbox ${isDone ? 'checked' : ''}"></div>
+            <span class="offering-text ${isDone ? 'done' : ''}">${o}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleOffering(index) {
+      checkedOfferings[index] = !checkedOfferings[index];
+      if (activeRitual) {
+        renderOfferings(activeRitual.variants[0].offerings);
+      }
+    }
+
+    function closeDetail(fromHistory = false) {
+      document.getElementById('detailView').classList.remove('active');
+      activeRitual = null;
+      if (!fromHistory && window.location.hash === '#detail') {
+        try { history.back(); } catch(e) {}
+      }
+    }
+
+    // Android BackHandler
+    window.addEventListener('popstate', () => {
+      const detail = document.getElementById('detailView');
+      if (detail && detail.classList.contains('active')) {
+        closeDetail(true);
+      }
+    });
+
+    function changePrayerFontSize(delta) {
+      prayerFontSize = Math.max(14, Math.min(32, prayerFontSize + delta));
+      const el = document.getElementById('prayerCardText');
+      if (el) {
+        el.style.fontSize = prayerFontSize + 'px';
+        el.style.lineHeight = (prayerFontSize * 1.65) + 'px';
+      }
+    }
+
+    function copyPrayer() {
+      const text = document.getElementById('prayerCardText').textContent;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          document.getElementById('btnCopyPrayer').textContent = 'Đã sao chép';
+        });
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        document.getElementById('btnCopyPrayer').textContent = 'Đã sao chép';
+      }
+    }
+
+    function saveProfile() {
+      info.ten = document.getElementById('txtTen').value.trim();
+      info.nam = document.getElementById('txtNam').value.trim();
+      info.dc = document.getElementById('txtDc').value.trim();
+      info.ngay = document.getElementById('txtNgay').value.trim();
+
+      safeStorage.setItem('info_ten', info.ten);
+      safeStorage.setItem('info_nam', info.nam);
+      safeStorage.setItem('info_dc', info.dc);
+      safeStorage.setItem('info_ngay', info.ngay);
+
+      const btn = document.getElementById('btnSaveProfile');
+      btn.textContent = 'Đã lưu';
+      setTimeout(() => { btn.textContent = 'Lưu thông tin'; }, 2000);
+    }
+
+    // Init
+    renderHomeGrid();
+  </script>
+</body>
+</html>
